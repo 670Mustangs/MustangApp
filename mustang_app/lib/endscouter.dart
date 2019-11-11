@@ -35,7 +35,7 @@ class _EndScouterState extends State<EndScouter> {
     return Scaffold(
         appBar: Header(
           context,
-          'Pre Scouting Info',
+          'Match End Info',
         ),
         body: Column(
           children: <Widget>[
@@ -44,8 +44,29 @@ class _EndScouterState extends State<EndScouter> {
                   EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
               child: DropdownButton<String>(
                 value: _selectedVal,
-                hint: Text('Choose Starting HAB Level', style: TextStyle(color: Colors.black, fontSize: 20)),
+                hint: Text('Choose Ending HAB Level', style: TextStyle(color: Colors.black, fontSize: 20)),
                 items: <String>['None', 'Base', 'Level 1', 'Level 2']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedVal = value;
+                    _checkReqs();
+                  });
+                },
+              ),
+            ),
+            Container(
+              padding:
+                  EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
+              child: DropdownButton<String>(
+                value: _selectedVal,
+                hint: Text('Choose Match Result', style: TextStyle(color: Colors.black, fontSize: 20)),
+                items: <String>['Win', 'Lose', 'Tie']
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -82,6 +103,19 @@ class _EndScouterState extends State<EndScouter> {
                   EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
               child: TextField(
                 onChanged: (String s) => _checkReqs(),
+                controller: _names,
+                decoration: InputDecoration(
+                  labelText: 'Rockets Completed',
+                  errorText: _error ? 'Field is required' : null,
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+            Container(
+              padding:
+                  EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
+              child: TextField(
+                onChanged: (String s) => _checkReqs(),
                 controller: _finalComments,
                 decoration: InputDecoration(
                   labelText: 'Final Comments',
@@ -97,7 +131,7 @@ class _EndScouterState extends State<EndScouter> {
                 controller: _names,
                 decoration: InputDecoration(
                   labelText: 'Name(s)',
-                  errorText: _error ? 'Name is required' : null,
+                  errorText: _error ? 'Field is required' : null,
                   border: OutlineInputBorder(),
                 ),
               ),
