@@ -37,7 +37,6 @@ class _ScouterState extends State<Scouter> {
           'Pre Scouting Info',
         ),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
               padding:
@@ -87,6 +86,7 @@ class _ScouterState extends State<Scouter> {
               ),
             ),
             RaisedButton(
+                color: Colors.green,
                 onPressed: () {
                   setState(() {
                     _enabled
@@ -97,7 +97,7 @@ class _ScouterState extends State<Scouter> {
                 padding: EdgeInsets.all(15),
                 child: Text(
                   'Start',
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 20, color: Colors.white),
                 ))
           ],
         ));
