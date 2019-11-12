@@ -103,7 +103,6 @@ class _EndScouterState extends State<EndScouter> {
                   EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
               child: TextField(
                 onChanged: (String s) => _checkReqs(),
-                controller: _names,
                 decoration: InputDecoration(
                   labelText: 'Rockets Completed',
                   errorText: _error ? 'Field is required' : null,
