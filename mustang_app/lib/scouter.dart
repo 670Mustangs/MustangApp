@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import './header.dart';
 import './mainscouter.dart';
+import './bottomnavbar.dart';
 
 class Scouter extends StatefulWidget {
   static const String route = '/Scouter';
@@ -100,6 +101,8 @@ class _ScouterState extends State<Scouter> {
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ))
           ],
-        ));
+        ),
+        bottomNavigationBar: BottomNavBar(context),
+      );
   }
 }

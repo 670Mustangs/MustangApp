@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import './header.dart';
+import './bottomnavbar.dart';
 
 class Calendar extends StatefulWidget {
   static const String route = '/Calendar';
@@ -90,6 +91,7 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
           Expanded(child: _buildEventList()),
         ],
       ),
+      bottomNavigationBar: BottomNavBar(context),
     );
   }
 

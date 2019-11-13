@@ -5,6 +5,8 @@ import './scouter.dart';
 import './mainscouter.dart';
 import './endscouter.dart';
 import './postscouter.dart';
+import './search.dart';
+import './bottomnavbar.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,6 +18,7 @@ class MyApp extends StatelessWidget {
     MainScouter.route: (BuildContext context) => new MainScouter(),
     EndScouter.route: (BuildContext context) => new EndScouter(),
     PostScouter.route: (BuildContext context) => new PostScouter(),
+    Searcher.route: (BuildContext context) => new Searcher(),
 
   };
   @override
@@ -30,7 +33,22 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return HomePageState();
+  }
+}
+
+class HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,6 +90,7 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: BottomNavBar(context),
     );
   }
 }
