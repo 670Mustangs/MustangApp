@@ -6,25 +6,12 @@ import './bottomnavbar.dart';
 
 class Calendar extends StatefulWidget {
   static const String route = '/Calendar';
-  @override
-  State<StatefulWidget> createState() {
-    return new _CalendarState();
-  }
-}
+  static Map<DateTime, List> events;
 
-class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
-  Map<DateTime, List> _events;
-  List _selectedEvents;
-  AnimationController _animationController;
-  CalendarController _calendarController;
+  void initEvents() {
+    events = new Map<DateTime, List>();
 
-  @override
-  void initState() {
-    super.initState();
-    final _selectedDay = DateTime.now();
-    _events = new Map<DateTime, List>();
-
-    _events = {
+    events = {
       DateTime(2019, 9, 25): ['Calgames Meeting'],
       DateTime(2019, 9, 27): ['Strategy Meeting'],
       DateTime(2019, 10, 5): ['Calgames Day 1'],
@@ -38,11 +25,32 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
     };
 
     for (int i = 0; i < 9; i++) {
-      _events.putIfAbsent(DateTime(2019, 10, 9 + 7 * i),
+      events.putIfAbsent(DateTime(2019, 10, 9 + 7 * i),
           () => ['Projects', 'R & D', 'Mad Max']);
-      _events.putIfAbsent(DateTime(2019, 10, 11 + 7 * i),
+      events.putIfAbsent(DateTime(2019, 10, 11 + 7 * i),
           () => ['Projects', 'R & D', 'Mad Max']);
     }
+  }
+
+  @override
+  State<StatefulWidget> createState() {
+    this.initEvents();
+    return new _CalendarState(events);
+  }
+}
+
+class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
+  Map<DateTime, List> _events;
+  List _selectedEvents;
+  AnimationController _animationController;
+  CalendarController _calendarController;
+
+  _CalendarState([this._events]);
+
+  @override
+  void initState() {
+    super.initState();
+    final _selectedDay = DateTime.now();
 
     _selectedEvents = _events[_selectedDay] ?? [];
     _calendarController = CalendarController();

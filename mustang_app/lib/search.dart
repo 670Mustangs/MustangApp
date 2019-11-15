@@ -1,24 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:mustang_app/calendar.dart';
 
 import './header.dart';
 import './bottomnavbar.dart';
+import './calendar.dart';
 
-class Searcher extends StatefulWidget {
-  static const String route = '/Searcher';
+class Searcher extends SearchDelegate<String> {
+
+  var events = Calendar.events;
 
   @override
-  State<StatefulWidget> createState() {
-    return SearcherState();
+  List<Widget> buildActions(BuildContext context) {
+    // TODO: implement buildActions
+    return null;
   }
-}
 
-class SearcherState extends State<Searcher> {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: Header(context, 'Search'), 
-      body: Center(),
-      bottomNavigationBar: BottomNavBar(context),
-    );
+  Widget buildLeading(BuildContext context) {
+    // TODO: implement buildLeading
+    return null;
   }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // TODO: implement buildResults
+    return null;
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    // TODO: implement buildSuggestions
+    return null;
+  }
+
 }
