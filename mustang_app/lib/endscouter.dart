@@ -13,20 +13,22 @@ class EndScouter extends StatefulWidget {
 }
 
 class _EndScouterState extends State<EndScouter> {
-  TextEditingController _finalComments = TextEditingController();
-  TextEditingController _names = TextEditingController();
-  bool _enabled = false;
-  bool _error = false;
-  String _selectedVal;
-  bool _val = false;
+  TextEditingController _rocketsCompletedController = TextEditingController();
+  TextEditingController _finalCommentsController = TextEditingController();
+  TextEditingController _namesController = TextEditingController();
+  bool _submissionEnabled = false;
+  bool _showError = false;
+  String _endingHabLevel;
+  String _matchResult;
+  bool _climbAssist = false;
 
   void _checkReqs() {
-    if (_names.text != '' &&
-        _finalComments.text != '' &&
-        _selectedVal != null) {
-      _enabled = true;
+    if (_namesController.text != '' &&
+        _finalCommentsController.text != '' &&
+        _endingHabLevel != null) {
+      _submissionEnabled = true;
     } else {
-      _enabled = false;
+      _submissionEnabled = false;
     }
   }
 
@@ -43,7 +45,7 @@ class _EndScouterState extends State<EndScouter> {
               padding:
                   EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
               child: DropdownButton<String>(
-                value: _selectedVal,
+                value: _endingHabLevel,
                 hint: Text('Choose Ending HAB Level', style: TextStyle(color: Colors.black, fontSize: 20)),
                 items: <String>['None', 'Base', 'Level 1', 'Level 2']
                     .map<DropdownMenuItem<String>>((String value) {
@@ -54,7 +56,7 @@ class _EndScouterState extends State<EndScouter> {
                 }).toList(),
                 onChanged: (value) {
                   setState(() {
-                    _selectedVal = value;
+                    _endingHabLevel = value;
                     _checkReqs();
                   });
                 },
@@ -64,7 +66,7 @@ class _EndScouterState extends State<EndScouter> {
               padding:
                   EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
               child: DropdownButton<String>(
-                value: _selectedVal,
+                value: _matchResult,
                 hint: Text('Choose Match Result', style: TextStyle(color: Colors.black, fontSize: 20)),
                 items: <String>['Win', 'Lose', 'Tie']
                     .map<DropdownMenuItem<String>>((String value) {
@@ -75,7 +77,7 @@ class _EndScouterState extends State<EndScouter> {
                 }).toList(),
                 onChanged: (value) {
                   setState(() {
-                    _selectedVal = value;
+                    _endingHabLevel = value;
                     _checkReqs();
                   });
                 },
@@ -90,10 +92,10 @@ class _EndScouterState extends State<EndScouter> {
                     fontSize: 20,
                   ),
                 ),
-                value: _val,
+                value: _climbAssist,
                 onChanged: (bool value) {
                   setState(() {
-                    _val = value;
+                    _climbAssist = value;
                   });
                 },
               ),
@@ -103,9 +105,10 @@ class _EndScouterState extends State<EndScouter> {
                   EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
               child: TextField(
                 onChanged: (String s) => _checkReqs(),
+                controller: _rocketsCompletedController,
                 decoration: InputDecoration(
                   labelText: 'Rockets Completed',
-                  errorText: _error ? 'Field is required' : null,
+                  errorText: _showError ? 'Field is required' : null,
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -115,7 +118,7 @@ class _EndScouterState extends State<EndScouter> {
                   EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
               child: TextField(
                 onChanged: (String s) => _checkReqs(),
-                controller: _finalComments,
+                controller: _finalCommentsController,
                 decoration: InputDecoration(
                   labelText: 'Final Comments',
                   border: OutlineInputBorder(),
@@ -127,10 +130,10 @@ class _EndScouterState extends State<EndScouter> {
                   EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
               child: TextField(
                 onChanged: (String s) => _checkReqs(),
-                controller: _names,
+                controller: _namesController,
                 decoration: InputDecoration(
                   labelText: 'Name(s)',
-                  errorText: _error ? 'Field is required' : null,
+                  errorText: _showError ? 'Field is required' : null,
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -139,9 +142,9 @@ class _EndScouterState extends State<EndScouter> {
                 color: Colors.green,
                 onPressed: () {
                   setState(() {
-                    _enabled
+                    _submissionEnabled
                         ? Navigator.pushNamed(context, PostScouter.route)
-                        : _error = true;
+                        : _showError = true;
                   });
                 },
                 padding: EdgeInsets.all(15),

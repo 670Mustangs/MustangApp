@@ -14,19 +14,19 @@ class Scouter extends StatefulWidget {
 }
 
 class _ScouterState extends State<Scouter> {
-  TextEditingController _teamNumber = TextEditingController();
-  TextEditingController _matchNumber = TextEditingController();
-  bool _enabled = false;
-  bool _error = false;
-  String _selectedVal;
+  TextEditingController _teamNumberController = TextEditingController();
+  TextEditingController _matchNumberController = TextEditingController();
+  bool _submissionEnabled = false;
+  bool _showError = false;
+  String _startingHabLevel;
 
   void _checkReqs() {
-    if (_matchNumber.text != '' &&
-        _teamNumber.text != '' &&
-        _selectedVal != null) {
-      _enabled = true;
+    if (_matchNumberController.text != '' &&
+        _teamNumberController.text != '' &&
+        _startingHabLevel != null) {
+      _submissionEnabled = true;
     } else {
-      _enabled = false;
+      _submissionEnabled = false;
     }
   }
 
@@ -44,10 +44,10 @@ class _ScouterState extends State<Scouter> {
                   EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 15),
               child: TextField(
                 onChanged: (String s) => _checkReqs(),
-                controller: _teamNumber,
+                controller: _teamNumberController,
                 decoration: InputDecoration(
                   labelText: 'Team Number',
-                  errorText: _error ? 'Team number is required' : null,
+                  errorText: _showError ? 'Team number is required' : null,
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -57,10 +57,10 @@ class _ScouterState extends State<Scouter> {
                   EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
               child: TextField(
                 onChanged: (String s) => _checkReqs(),
-                controller: _matchNumber,
+                controller: _matchNumberController,
                 decoration: InputDecoration(
                   labelText: 'Match Number',
-                  errorText: _error ? 'Match number is required' : null,
+                  errorText: _showError ? 'Match number is required' : null,
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -69,7 +69,7 @@ class _ScouterState extends State<Scouter> {
               padding:
                   EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
               child: DropdownButton<String>(
-                value: _selectedVal,
+                value: _startingHabLevel,
                 hint: Text('Choose Starting HAB Level'),
                 items: <String>['Base', 'Level 1', 'Level 2']
                     .map<DropdownMenuItem<String>>((String value) {
@@ -80,7 +80,7 @@ class _ScouterState extends State<Scouter> {
                 }).toList(),
                 onChanged: (value) {
                   setState(() {
-                    _selectedVal = value;
+                    _startingHabLevel = value;
                     _checkReqs();
                   });
                 },
@@ -90,9 +90,9 @@ class _ScouterState extends State<Scouter> {
                 color: Colors.green,
                 onPressed: () {
                   setState(() {
-                    _enabled
+                    _submissionEnabled
                         ? Navigator.pushNamed(context, MainScouter.route)
-                        : _error = true;
+                        : _showError = true;
                   });
                 },
                 padding: EdgeInsets.all(15),

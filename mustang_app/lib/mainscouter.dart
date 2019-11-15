@@ -14,6 +14,9 @@ class MainScouter extends StatefulWidget {
 }
 
 class _MainScouterState extends State<MainScouter> {
+
+  TextEditingController _foulsController = TextEditingController();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,6 +136,7 @@ class _MainScouterState extends State<MainScouter> {
                 padding:
                     EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 30),
                 child: TextField(
+                  controller: _foulsController,
                   decoration: InputDecoration(
                     labelText: 'Fouls',
                     border: OutlineInputBorder(),
