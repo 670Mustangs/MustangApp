@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 import './header.dart';
 import './postscouter.dart';
@@ -13,6 +14,7 @@ class EndScouter extends StatefulWidget {
 }
 
 class _EndScouterState extends State<EndScouter> {
+  final DBRef = FirebaseDatabase.instance.reference();
   TextEditingController _rocketsCompletedController = TextEditingController();
   TextEditingController _finalCommentsController = TextEditingController();
   TextEditingController _namesController = TextEditingController();
@@ -30,6 +32,28 @@ class _EndScouterState extends State<EndScouter> {
     } else {
       _submissionEnabled = false;
     }
+  }
+
+  void writeData(num teamNumber) {
+    DBRef.child("Match Scouting").child(teamNumber.toString()).set({
+      //TODO json pairs
+    });
+  }
+
+  void updateData(num teamNumber) {
+    DBRef.child("Match Scouting").child(teamNumber.toString()).update({
+      //TODO json pairs
+    });
+  }
+
+  void readData() {
+    DBRef.once().then((DataSnapshot data) {
+      print(data.value);
+    });
+  }
+
+  void deleteData(num teamNumber) {
+    DBRef.child("Match Scouting").child(teamNumber.toString()).remove();
   }
 
   @override
