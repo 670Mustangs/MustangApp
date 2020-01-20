@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     // EndgameScouter.route: (BuildContext context) => new EndgameScouter(),
     // MatchEndScouter.route: (BuildContext context) => new MatchEndScouter(),
     PostScouter.route: (BuildContext context) => new PostScouter(),
-    // Searcher.route: (BuildContext context) => new Searcher(),
+    SearchPage.route: (BuildContext context) => new SearchPage(),
   };
   @override
   Widget build(BuildContext context) {

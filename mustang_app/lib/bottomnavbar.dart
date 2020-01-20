@@ -11,7 +11,7 @@ class BottomNavBar extends BottomNavigationBar {
     '/',
     Calendar.route,
     Scouter.route,
-    Calendar.route,
+    SearchPage.route,
   ];
 
   BottomNavBar(BuildContext context)
@@ -32,7 +32,7 @@ class BottomNavBar extends BottomNavigationBar {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.search),
-              title: Text('Search'),
+              title: Text('Data'),
             ),
           ],
           currentIndex: _selectedIndex,

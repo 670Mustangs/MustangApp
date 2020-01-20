@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mustang_app/pitscouting.dart';
 
 import './header.dart';
 import './autonscouting.dart';
@@ -52,26 +53,51 @@ class _ScouterState extends State<Scouter> {
             ),
           ),
           RaisedButton(
-              color: Colors.green,
-              onPressed: () {
-                setState(() {
-                  db.startNewMatch(
-                      _teamNumberController.text, _matchNumberController.text);
-                  print(_teamNumberController.text + "   " + _matchNumberController.text);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AutonScouter(
-                              _teamNumberController.text,
-                              _matchNumberController.text)));
-                  // Navigator.pushNamed(context, AutonScouter.route);
-                });
-              },
-              padding: EdgeInsets.all(15),
-              child: Text(
-                'Start',
-                style: TextStyle(fontSize: 20, color: Colors.white),
-              ))
+            color: Colors.green,
+            onPressed: () {
+              setState(() {
+                db.startPitScouting(_teamNumberController.text);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PitScouter(
+                      _teamNumberController.text,
+                    ),
+                  ),
+                );
+                // Navigator.pushNamed(context, AutonScouter.route);
+              });
+            },
+            padding: EdgeInsets.all(15),
+            child: Text(
+              'Pit Scouting',
+              style: TextStyle(fontSize: 20, color: Colors.white),
+            ),
+          ),
+          RaisedButton(
+            color: Colors.green,
+            onPressed: () {
+              setState(() {
+                db.startNewMatch(
+                    _teamNumberController.text, _matchNumberController.text);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AutonScouter(
+                      _teamNumberController.text,
+                      _matchNumberController.text,
+                    ),
+                  ),
+                );
+                // Navigator.pushNamed(context, AutonScouter.route);
+              });
+            },
+            padding: EdgeInsets.all(15),
+            child: Text(
+              'Match Scouting',
+              style: TextStyle(fontSize: 20, color: Colors.white),
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavBar(context),

@@ -2,37 +2,52 @@ import 'package:firebase_database/firebase_database.dart';
 
 class DatabaseOperations {
   DatabaseReference DBRef;
+  List<String> teamNames = new List<String>();
 
   DatabaseOperations() {
     DBRef = FirebaseDatabase.instance.reference();
   }
 
-  void startNewMatch(String teamNumber, String matchNumber) {
-    DBRef.child('teams')
+  void startPitScouting(String teamNumber) {
+    var parent = DBRef.child('teams')
         .child('Team Number: ' + teamNumber)
-        .child('Match Number: ' + matchNumber)
-        .set({
+        .child('Pit Scouting');
+
+    parent.set({
+      'Example Text': '',
+    });
+  }
+
+  void updatePitScouting(String teamNumber, {String text}) {
+    var parent = DBRef.child('teams')
+        .child('Team Number: ' + teamNumber)
+        .child('Pit Scouting');
+
+    parent.update({
+      'Example Text': text,
+    });
+  }
+
+  void startNewMatch(String teamNumber, String matchNumber) {
+    var parent = DBRef.child('teams')
+        .child('Team Number: ' + teamNumber)
+        .child('Match Scouting')
+        .child('Match Number: ' + matchNumber);
+
+    parent.set({
       'Auton': [],
       'Teleop': [],
       'Endgame': [],
       'Summary': [],
     });
-    DBRef.child('teams')
-        .child('Team Number: ' + teamNumber)
-        .child('Match Number: ' + matchNumber)
-        .child('Auton')
-        .set({
+    parent.set({
       'Bottom Port': 0,
       'Outer Port': 0,
       'Inner Port': 0,
       'Crossed Initiation Line': false,
       'Total Points': 0,
     });
-    DBRef.child('teams')
-        .child('Team Number: ' + teamNumber)
-        .child('Match Number: ' + matchNumber)
-        .child('Teleop')
-        .set({
+    parent.set({
       'Bottom Port': 0,
       'Outer Port': 0,
       'Inner Port': 0,
@@ -40,11 +55,7 @@ class DatabaseOperations {
       'Position Control': false,
       'Total Points': 0,
     });
-    DBRef.child('teams')
-        .child('Team Number: ' + teamNumber)
-        .child('Match Number: ' + matchNumber)
-        .child('Endgame')
-        .set({
+    parent.set({
       'Bottom Port': 0,
       'Outer Port': 0,
       'Inner Port': 0,
@@ -52,11 +63,7 @@ class DatabaseOperations {
       'Ending State': '',
       'Total Points': 0,
     });
-    DBRef.child('teams')
-        .child('Team Number: ' + teamNumber)
-        .child('Match Number: ' + matchNumber)
-        .child('Summary')
-        .set({
+    parent.set({
       'Crossed Initiation Line': false,
       'Bottom Port': 0,
       'Outer Port': 0,
@@ -164,14 +171,11 @@ class DatabaseOperations {
       var parent = dataSnapshot.value['teams']['Team Number: ' + teamNumber]
           ['Match Number: ' + matchNumber];
       var rp = 0;
-      if(parent['Summary']['Match Result'] == 'Win')
+      if (parent['Summary']['Match Result'] == 'Win')
         rp += 2;
-      else if(parent['Summary']['Match Result'] == 'Draw')
-        rp += 1;
-      if(parent['Endgame']['Total Points'] >= 65)
-        rp += 1;
-      if(parent['Summary']['Stages Completed'] == 3)
-        rp+= 1;
+      else if (parent['Summary']['Match Result'] == 'Draw') rp += 1;
+      if (parent['Endgame']['Total Points'] >= 65) rp += 1;
+      if (parent['Summary']['Stages Completed'] == 3) rp += 1;
       DBRef.child('teams')
           .child('Team Number: ' + teamNumber)
           .child('Match Number: ' + matchNumber)
@@ -201,5 +205,15 @@ class DatabaseOperations {
         'Stages Completed': parent['Endgame']['Stages Completed'],
       });
     });
+  }
+
+  Future<List<String>> getTeams() async {
+    DataSnapshot data = await DBRef.child('teams').once();
+    Map<dynamic, dynamic> values = data.value;
+    values.forEach((key, values) {
+      teamNames.add(key);
+    });
+    print(teamNames);
+    return teamNames;
   }
 }
