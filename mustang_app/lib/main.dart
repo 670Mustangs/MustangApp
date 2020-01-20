@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:mustang_app/endgamescouting.dart';
 
 import './calendar.dart';
 import './scouter.dart';
-import './mainscouter.dart';
-import './endscouter.dart';
+import './autonscouting.dart';
+import './teleopscouting.dart';
 import './postscouter.dart';
 import './search.dart';
 import './homepage.dart';
+import './matchendscouting.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,20 +17,22 @@ class MyApp extends StatelessWidget {
   static final Map<String, WidgetBuilder> routes = {
     Calendar.route: (BuildContext context) => new Calendar(),
     Scouter.route: (BuildContext context) => new Scouter(),
-    MainScouter.route: (BuildContext context) => new MainScouter(),
-    EndScouter.route: (BuildContext context) => new EndScouter(),
+    // AutonScouter.route: (BuildContext context) => new AutonScouter(),
+    // TeleopScouter.route: (BuildContext context) => new TeleopScouter(),
+    // EndgameScouter.route: (BuildContext context) => new EndgameScouter(),
+    // MatchEndScouter.route: (BuildContext context) => new MatchEndScouter(),
     PostScouter.route: (BuildContext context) => new PostScouter(),
     // Searcher.route: (BuildContext context) => new Searcher(),
-
   };
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.green,
-        ),
-        home: HomePage(),
-        routes: routes);
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+      ),
+      home: HomePage(),
+      routes: routes,
+    );
   }
 }
