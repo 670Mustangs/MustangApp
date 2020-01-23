@@ -9,6 +9,7 @@ import './postscouter.dart';
 import './search.dart';
 import './homepage.dart';
 import './matchendscouting.dart';
+import './sketcher.dart';
 
 void main() => runApp(MyApp());
 
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
     // MatchEndScouter.route: (BuildContext context) => new MatchEndScouter(),
     PostScouter.route: (BuildContext context) => new PostScouter(),
     SearchPage.route: (BuildContext context) => new SearchPage(),
+    SketchPage.route: (BuildContext context) => new SketchPage(),
   };
   @override
   Widget build(BuildContext context) {

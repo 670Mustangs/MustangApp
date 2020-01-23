@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mustang_app/sketcher.dart';
 
 import './calendar.dart';
 import './scouter.dart';
@@ -12,6 +13,7 @@ class BottomNavBar extends BottomNavigationBar {
     Calendar.route,
     Scouter.route,
     SearchPage.route,
+    SketchPage.route,
   ];
 
   BottomNavBar(BuildContext context)
@@ -33,6 +35,10 @@ class BottomNavBar extends BottomNavigationBar {
             BottomNavigationBarItem(
               icon: Icon(Icons.search),
               title: Text('Data'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.edit),
+              title: Text('Draw'),
             ),
           ],
           currentIndex: _selectedIndex,
