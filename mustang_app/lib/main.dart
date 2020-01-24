@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mustang_app/endgamescouting.dart';
+import 'package:mustang_app/teaminfodisplay.dart';
 
 import './calendar.dart';
 import './scouter.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
     PostScouter.route: (BuildContext context) => new PostScouter(),
     SearchPage.route: (BuildContext context) => new SearchPage(),
     SketchPage.route: (BuildContext context) => new SketchPage(),
+    TeamInfoDisplay.route: (BuildContext context) => new TeamInfoDisplay(),
   };
   @override
   Widget build(BuildContext context) {

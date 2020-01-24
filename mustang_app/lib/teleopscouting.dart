@@ -107,6 +107,8 @@ class _TeleopScouterState extends State<TeleopScouter> {
                 onChanged: (bool value) {
                   setState(() {
                     _positionControl = value;
+                    if(_positionControl)
+                      _rotationControl = true;
                   });
                 },
               ),

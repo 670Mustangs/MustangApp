@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 class DatabaseOperations {
-  DatabaseReference DBRef;
   Firestore db;
   List<String> teamNames = new List<String>();
 
@@ -12,40 +10,26 @@ class DatabaseOperations {
   }
 
   void startPitScouting(String teamNumber) {
-    // var parent = DBRef.child('teams')
-    //     .child('Team Number: ' + teamNumber)
-    //     .child('Pit Scouting');
-    print('log');
-    Map<String, Object> pitScouting = {
-      'Example Text': '',
-    };
-    db.collection('teams').document('Team Number: ' + teamNumber)
-      ..setData({'Pit Scouting': pitScouting}, merge: true);
-    print('log');
-
-    // parent.set({
-    //   'Example Text': '',
-    // });
+    db.collection('teams').document('Team Number: ' + teamNumber).setData({
+      'Pit Scouting': {
+        'Example Text': '',
+      }
+    }, merge: true);
+    db
+        .collection('teams')
+        .document('Team Number: ' + teamNumber)
+        .updateData({'Team Number': teamNumber});
   }
 
   void updatePitScouting(String teamNumber, {String text}) {
-    // var parent = DBRef.child('teams')
-    //     .child('Team Number: ' + teamNumber)
-    //     .child('Pit Scouting');
-
-    // parent.update({
-    //   'Example Text': text,
-    // });
     db.collection('teams').document('Team Number: ' + teamNumber).updateData({
-      'Example Text': text,
+      'Pit Scouting': {
+        'Example Text': text,
+      }
     });
   }
 
   void startNewMatch(String teamNumber, String matchNumber) {
-    // var parent = DBRef.child('teams')
-    //     .child('Team Number: ' + teamNumber)
-    //     .child('Match Scouting')
-    //     .child('Match Number: ' + matchNumber);
     var parent = db
         .collection('teams')
         .document('Team Number: ' + teamNumber)
@@ -105,6 +89,11 @@ class DatabaseOperations {
         'Stages Completed': 0,
       }
     }, merge: true);
+
+    // db
+    //     .collection('teams')
+    //     .document('Team Number: ' + teamNumber)
+    //     .updateData({'Team Number': teamNumber});
   }
 
   void updateMatchDataAuton(String teamNumber, String matchNumber,
@@ -216,92 +205,54 @@ class DatabaseOperations {
       var map = dataSnapshot.data.map((String key, Object value) {
         return MapEntry(key, value);
       });
-      print(map);
-      Map<String, Object> summary = map['Summary'];
-      Map<String, Object> endgame = map['Endgame'];
-      Map<String, Object> auton = map['Auton'];
-      Map<String, Object> teleop = map['Teleop'];
+      Map<dynamic, dynamic> summary = map['Summary'];
+      Map<dynamic, dynamic> endgame = map['Endgame'];
+      Map<dynamic, dynamic> auton = map['Auton'];
+      Map<dynamic, dynamic> teleop = map['Teleop'];
       var rp = 0;
       if (summary['Match Result'] == 'Win')
         rp += 2;
-      else if (summary['Match Result'] == 'Draw')
+      else if (summary['Match Result'] == 'Draw') 
         rp += 1;
-      if (int.parse(endgame['Total Points']) >= 65)
+      if (int.parse(endgame['Total Points'].toString()) >= 65) {
         rp += 1;
-      if (int.parse(summary['Stages Completed']) == 3)
+      }
+      if(int.parse(endgame['Stages Completed'].toString()) == 3) {
         rp += 1;
-      db.collection('teams').document('Team Number: ' + teamNumber).collection('Match Scouting').document('Match Number: ' + matchNumber).updateData({'Summary': {
-        'Crossed Initiation Line': auton['Crossed Initiation Line'],
-        'Bottom Port': int.parse(auton['Bottom Port']) +
-            teleop['Bottom Port'] +
-            endgame['Bottom Port'],
-        'Outer Port': int.parse(auton['Outer Port']) +
-            teleop['Outer Port'] +
-            endgame['Outer Port'],
-        'Inner Port': int.parse(auton['Inner Port']) +
-            teleop['Inner Port'] +
-            endgame['Inner Port'],
-        'Rotation Control': teleop['Rotation Control'],
-        'Position Control': teleop['Position Control'],
-        'Ending State': endgame['Ending State'],
-        'Match Result': summary['Match Result'],
-        'Total Points': int.parse(auton['Total Points']) +
-            teleop['Total Points'] +
-            endgame['Total Points'],
-        'Ranking Points': rp,
-        'Fouls': summary['Fouls'],
-        'Final Comments': summary['Final Comments'],
-        'Scouters': summary['Scouters'],
-        'Stages Completed': summary['Stages Completed'],
-      }});
+      }
+      // if (int.parse(summary['Stages Completed'].toString()) == 3)
+      //   rp += 1;
+      db
+          .collection('teams')
+          .document('Team Number: ' + teamNumber)
+          .collection('Match Scouting')
+          .document('Match Number: ' + matchNumber)
+          .updateData({
+        'Summary': {
+          'Crossed Initiation Line': auton['Crossed Initiation Line'],
+          'Bottom Port': int.parse(auton['Bottom Port'].toString()) +
+              teleop['Bottom Port'] +
+              endgame['Bottom Port'],
+          'Outer Port': int.parse(auton['Outer Port'].toString()) +
+              teleop['Outer Port'] +
+              endgame['Outer Port'],
+          'Inner Port': int.parse(auton['Inner Port'].toString()) +
+              teleop['Inner Port'] +
+              endgame['Inner Port'],
+          'Rotation Control': teleop['Rotation Control'],
+          'Position Control': teleop['Position Control'],
+          'Ending State': endgame['Ending State'],
+          'Match Result': summary['Match Result'],
+          'Total Points': int.parse(auton['Total Points'].toString()) +
+              teleop['Total Points'] +
+              endgame['Total Points'],
+          'Ranking Points': rp,
+          'Fouls': summary['Fouls'],
+          'Final Comments': summary['Final Comments'],
+          'Scouters': summary['Scouters'],
+          'Stages Completed': summary['Stages Completed'],
+        }
+      });
     });
-    // DBRef.once().then((DataSnapshot dataSnapshot) {
-    //   var parent = dataSnapshot.value['teams']['Team Number: ' + teamNumber]
-    //       ['Match Number: ' + matchNumber];
-    //   var rp = 0;
-    //   if (parent['Summary']['Match Result'] == 'Win')
-    //     rp += 2;
-    //   else if (parent['Summary']['Match Result'] == 'Draw') rp += 1;
-    //   if (parent['Endgame']['Total Points'] >= 65) rp += 1;
-    //   if (parent['Summary']['Stages Completed'] == 3) rp += 1;
-    //   DBRef.child('teams')
-    //       .child('Team Number: ' + teamNumber)
-    //       .child('Match Number: ' + matchNumber)
-    //       .child('Summary')
-    //       .update({
-        // 'Crossed Initiation Line': parent['Auton']['Crossed Initiation Line'],
-        // 'Bottom Port': parent['Auton']['Bottom Port'] +
-        //     parent['Teleop']['Bottom Port'] +
-        //     parent['Endgame']['Bottom Port'],
-        // 'Outer Port': parent['Auton']['Outer Port'] +
-        //     parent['Teleop']['Outer Port'] +
-        //     parent['Endgame']['Outer Port'],
-        // 'Inner Port': parent['Auton']['Inner Port'] +
-        //     parent['Teleop']['Inner Port'] +
-        //     parent['Endgame']['Inner Port'],
-        // 'Rotation Control': parent['Teleop']['Rotation Control'],
-        // 'Position Control': parent['Teleop']['Position Control'],
-        // 'Ending State': parent['Endgame']['Ending State'],
-        // 'Match Result': parent['Summary']['Match Result'],
-        // 'Total Points': parent['Auton']['Total Points'] +
-        //     parent['Teleop']['Total Points'] +
-        //     parent['Endgame']['Total Points'],
-        // 'Ranking Points': rp,
-        // 'Fouls': parent['Summary']['Fouls'],
-        // 'Final Comments': parent['Summary']['Final Comments'],
-        // 'Scouters': parent['Summary']['Scouters'],
-        // 'Stages Completed': parent['Endgame']['Stages Completed'],
-    //   });
-    // });
-  }
-
-  Future<List<String>> getTeams() async {
-    DataSnapshot data = await DBRef.child('teams').once();
-    Map<dynamic, dynamic> values = data.value;
-    values.forEach((key, values) {
-      teamNames.add(key);
-    });
-    print(teamNames);
-    return teamNames;
   }
 }
