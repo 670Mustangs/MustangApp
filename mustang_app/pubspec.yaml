@@ -17,9 +17,9 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
-  firebase_auth:
-  firebase_core:
-  firebase_database:
+  # firebase_auth:
+  # firebase_core:
+  # firebase_database:
   table_calendar:
   flutter_speed_dial:
   flutter_colorpicker:
