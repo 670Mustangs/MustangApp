@@ -23,6 +23,7 @@ dependencies:
   table_calendar:
   flutter_speed_dial:
   flutter_colorpicker:
+  cloud_firestore:
     
   flutter:
     sdk: flutter
