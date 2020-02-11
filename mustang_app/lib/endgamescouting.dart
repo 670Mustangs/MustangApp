@@ -21,9 +21,12 @@ class EndgameScouter extends StatefulWidget {
 class _EndgameScouterState extends State<EndgameScouter> {
   String _teamNumber;
   String _matchNumber;
-  Counter _bottomPortController = Counter('Bottom Port');
-  Counter _outerPortController = Counter('Outer Port');
-  Counter _innerPortController = Counter('Inner Port');
+  Counter _bottomPort = Counter('Bottom Port');
+  Counter _outerPort = Counter('Outer Port');
+  Counter _innerPort = Counter('Inner Port');
+  Counter _bottomPortMissed = Counter('Bottom Port Missed');
+  Counter _outerPortMissed = Counter('Outer Port Missed');
+  Counter _innerPortMissed = Counter('Inner Port Missed');
   Counter _stagesCompletedController = new Counter('Stages Completed');
   String _endingState;
   DatabaseOperations db = new DatabaseOperations();
@@ -43,20 +46,35 @@ class _EndgameScouterState extends State<EndgameScouter> {
         body: Column(
           children: <Widget>[
             Container(
-              padding:
-                  EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
-              child: _bottomPortController,
-            ),
-            Container(
-              padding:
-                  EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
-              child: _outerPortController,
-            ),
-            Container(
-              padding:
-                  EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
-              child: _innerPortController,
-            ),
+                padding:
+                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+                child: _bottomPort,
+              ),
+              Container(
+                padding:
+                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+                child: _bottomPortMissed,
+              ),
+              Container(
+                padding:
+                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+                child: _outerPort,
+              ),
+                            Container(
+                padding:
+                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+                child: _outerPortMissed,
+              ),
+              Container(
+                padding:
+                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+                child: _innerPort,
+              ),
+              Container(
+                padding:
+                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+                child: _innerPortMissed,
+              ),
             Container(
               padding:
                   EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
@@ -87,9 +105,12 @@ class _EndgameScouterState extends State<EndgameScouter> {
                 color: Colors.green,
                 onPressed: () {
                   db.updateMatchDataEndgame(_teamNumber, _matchNumber,
-                      bottomPort: _bottomPortController.count,
-                      outerPort: _outerPortController.count,
-                      innerPort: _innerPortController.count,
+                      innerPort: _innerPort.count,
+                      innerPortMissed: _innerPortMissed.count,
+                      outerPort: _outerPort.count,
+                      outerPortMissed: _outerPortMissed.count,
+                      bottomPort: _bottomPort.count,
+                      bottomPortMissed: _bottomPortMissed.count,
                       stagesCompleted: _stagesCompletedController.count,
                       endState: _endingState);
                   Navigator.push(

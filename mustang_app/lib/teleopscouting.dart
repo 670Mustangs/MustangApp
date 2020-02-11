@@ -24,9 +24,12 @@ class _TeleopScouterState extends State<TeleopScouter> {
   String _teamNumber;
   String _matchNumber;
   DatabaseOperations db = new DatabaseOperations();
-  Counter _bottomPortController = Counter('Bottom Port');
-  Counter _outerPortController = Counter('Outer Port');
-  Counter _innerPortController = Counter('Inner Port');
+  Counter _bottomPort = Counter('Bottom Port');
+  Counter _outerPort = Counter('Outer Port');
+  Counter _innerPort = Counter('Inner Port');
+  Counter _bottomPortMissed = Counter('Bottom Port Missed');
+  Counter _outerPortMissed = Counter('Outer Port Missed');
+  Counter _innerPortMissed = Counter('Inner Port Missed');
 
   bool _rotationControl = false;
   bool _positionControl = false;
@@ -46,20 +49,35 @@ class _TeleopScouterState extends State<TeleopScouter> {
         body: Column(
           children: <Widget>[
             Container(
-              padding:
-                  EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
-              child: _bottomPortController,
-            ),
-            Container(
-              padding:
-                  EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
-              child: _outerPortController,
-            ),
-            Container(
-              padding:
-                  EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
-              child: _innerPortController,
-            ),
+                padding:
+                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+                child: _bottomPort,
+              ),
+              Container(
+                padding:
+                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+                child: _bottomPortMissed,
+              ),
+              Container(
+                padding:
+                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+                child: _outerPort,
+              ),
+                            Container(
+                padding:
+                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+                child: _outerPortMissed,
+              ),
+              Container(
+                padding:
+                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+                child: _innerPort,
+              ),
+              Container(
+                padding:
+                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+                child: _innerPortMissed,
+              ),
             Container(
               padding: EdgeInsets.all(15),
               child: SwitchListTile(
@@ -99,9 +117,12 @@ class _TeleopScouterState extends State<TeleopScouter> {
               color: Colors.green,
               onPressed: () {
                 db.updateMatchDataTeleop(_teamNumber, _matchNumber,
-                    bottomPort: _bottomPortController.count,
-                    outerPort: _outerPortController.count,
-                    innerPort: _innerPortController.count,
+                      innerPort: _innerPort.count,
+                      innerPortMissed: _innerPortMissed.count,
+                      outerPort: _outerPort.count,
+                      outerPortMissed: _outerPortMissed.count,
+                      bottomPort: _bottomPort.count,
+                      bottomPortMissed: _bottomPortMissed.count,
                     positionControl: _positionControl,
                     rotationControl: _rotationControl);
                 Navigator.push(

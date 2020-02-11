@@ -21,16 +21,18 @@ class AutonScouter extends StatefulWidget {
 
 class _AutonScouterState extends State<AutonScouter> {
   String _teamNumber, _matchNumber;
-  Counter _bottomPortController = Counter('Bottom Port');
-  Counter _outerPortController = Counter("Outer Port");
-  Counter _innerPortController;
+  Counter _bottomPort = Counter('Bottom Port');
+  Counter _outerPort = Counter('Outer Port');
+  Counter _innerPort = Counter('Inner Port');
+  Counter _bottomPortMissed = Counter('Bottom Port Missed');
+  Counter _outerPortMissed = Counter('Outer Port Missed');
+  Counter _innerPortMissed = Counter('Inner Port Missed');
   bool _crossedInitiationLine = false;
   DatabaseOperations db = new DatabaseOperations();
 
   _AutonScouterState(teamNumber, matchNumber) {
     _teamNumber = teamNumber;
     _matchNumber = matchNumber;
-    _innerPortController = Counter('Inner Port');
   }
   @override
   Widget build(BuildContext context) {
@@ -58,25 +60,43 @@ class _AutonScouterState extends State<AutonScouter> {
               ),
               Container(
                 padding:
-                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
-                child: _bottomPortController,
+                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+                child: _bottomPort,
               ),
               Container(
                 padding:
-                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
-                child: _outerPortController,
+                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+                child: _bottomPortMissed,
               ),
               Container(
                 padding:
-                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
-                child: _innerPortController,
+                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+                child: _outerPort,
+              ),
+                            Container(
+                padding:
+                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+                child: _outerPortMissed,
+              ),
+              Container(
+                padding:
+                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+                child: _innerPort,
+              ),
+              Container(
+                padding:
+                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+                child: _innerPortMissed,
               ),
               RaisedButton(
                 onPressed: () {
                   db.updateMatchDataAuton(_teamNumber, _matchNumber,
-                      innerPort: _innerPortController.count,
-                      outerPort: _outerPortController.count,
-                      bottomPort: _bottomPortController.count,
+                      innerPort: _innerPort.count,
+                      innerPortMissed: _innerPortMissed.count,
+                      outerPort: _outerPort.count,
+                      outerPortMissed: _outerPortMissed.count,
+                      bottomPort: _bottomPort.count,
+                      bottomPortMissed: _bottomPortMissed.count,
                       crossedLine: _crossedInitiationLine);
                   Navigator.push(
                       context,

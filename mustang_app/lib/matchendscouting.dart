@@ -24,7 +24,7 @@ class _MatchEndScouterState extends State<MatchEndScouter> {
   String _matchNumber;
   TextEditingController _finalCommentsController = TextEditingController();
   TextEditingController _namesController = TextEditingController();
-  Counter _foulsController = Counter('Fouls');
+  Counter _fouls = Counter('Fouls');
   String _matchResult;
   DatabaseOperations db = new DatabaseOperations();
 
@@ -66,7 +66,7 @@ class _MatchEndScouterState extends State<MatchEndScouter> {
             Container(
               padding:
                   EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
-              child: _foulsController,
+              child: _fouls,
             ),
             Container(
               padding:
@@ -94,7 +94,7 @@ class _MatchEndScouterState extends State<MatchEndScouter> {
                 color: Colors.green,
                 onPressed: () {
                   db.updateMatchDataEnd(_teamNumber, _matchNumber,
-                      fouls: _foulsController.count,
+                      fouls: _fouls.count,
                       finalComments: _finalCommentsController.text,
                       names: _namesController.text,
                       matchResult: _matchResult);

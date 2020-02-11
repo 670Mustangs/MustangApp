@@ -47,6 +47,9 @@ class DatabaseOperations {
         'Bottom Port': 0,
         'Outer Port': 0,
         'Inner Port': 0,
+        'Bottom Port Missed': 0,
+        'Inner Port Missed': 0,
+        'Outer Port Missed': 0,
         'Crossed Initiation Line': false,
         'Total Points': 0,
       }
@@ -56,6 +59,9 @@ class DatabaseOperations {
         'Bottom Port': 0,
         'Outer Port': 0,
         'Inner Port': 0,
+        'Bottom Port Missed': 0,
+        'Inner Port Missed': 0,
+        'Outer Port Missed': 0,
         'Rotation Control': false,
         'Position Control': false,
         'Total Points': 0,
@@ -66,6 +72,9 @@ class DatabaseOperations {
         'Bottom Port': 0,
         'Outer Port': 0,
         'Inner Port': 0,
+        'Bottom Port Missed': 0,
+        'Inner Port Missed': 0,
+        'Outer Port Missed': 0,
         'Stages Completed': 0,
         'Ending State': '',
         'Total Points': 0,
@@ -77,6 +86,9 @@ class DatabaseOperations {
         'Bottom Port': 0,
         'Outer Port': 0,
         'Inner Port': 0,
+        'Bottom Port Missed': 0,
+        'Inner Port Missed': 0,
+        'Outer Port Missed': 0,
         'Rotation Control': false,
         'Position Control': false,
         'Ending State': '',
@@ -97,7 +109,13 @@ class DatabaseOperations {
   }
 
   void updateMatchDataAuton(String teamNumber, String matchNumber,
-      {int bottomPort = 0, int innerPort, int outerPort, bool crossedLine}) {
+      {int bottomPort = 0,
+      int bottomPortMissed,
+      int innerPort,
+      int innerPortMissed,
+      int outerPort,
+      int outerPortMissed,
+      bool crossedLine}) {
     int totalPoints = bottomPort * 2 + outerPort * 4 + innerPort * 6;
     totalPoints += crossedLine ? 5 : 0;
 
@@ -111,6 +129,9 @@ class DatabaseOperations {
         'Bottom Port': bottomPort * 2,
         'Outer Port': outerPort * 4,
         'Inner Port': innerPort * 6,
+        'Inner Port Missed': innerPortMissed,
+        'Outer Port Missed': outerPortMissed,
+        'Bottom Port Missed': bottomPortMissed,
         'Crossed Initiation Line': crossedLine,
         'Total Points': totalPoints,
       }
@@ -120,8 +141,11 @@ class DatabaseOperations {
 
   void updateMatchDataTeleop(String teamNumber, String matchNumber,
       {int bottomPort = 0,
+      int bottomPortMissed,
       int innerPort,
+      int innerPortMissed,
       int outerPort,
+      int outerPortMissed,
       bool rotationControl,
       bool positionControl}) {
     int totalPoints = bottomPort * 1 + outerPort * 2 + innerPort * 3;
@@ -138,6 +162,9 @@ class DatabaseOperations {
         'Bottom Port': bottomPort * 1,
         'Outer Port': outerPort * 2,
         'Inner Port': innerPort * 3,
+        'Inner Port Missed': innerPortMissed,
+        'Outer Port Missed': outerPortMissed,
+        'Bottom Port Missed': bottomPortMissed,
         'Rotation Control': rotationControl,
         'Position Control': positionControl,
         'Total Points': totalPoints,
@@ -148,8 +175,11 @@ class DatabaseOperations {
 
   void updateMatchDataEndgame(String teamNumber, String matchNumber,
       {int bottomPort = 0,
+      int bottomPortMissed,
       int innerPort,
+      int innerPortMissed,
       int outerPort,
+      int outerPortMissed,
       int stagesCompleted,
       String endState}) {
     int totalPoints = bottomPort * 1 + outerPort * 2 + innerPort * 3;
@@ -167,6 +197,9 @@ class DatabaseOperations {
         'Bottom Port': bottomPort * 1,
         'Outer Port': outerPort * 2,
         'Inner Port': innerPort * 3,
+        'Inner Port Missed': innerPortMissed,
+        'Outer Port Missed': outerPortMissed,
+        'Bottom Port Missed': bottomPortMissed,
         'Ending State': endState,
         'Total Points': totalPoints,
         'Stages Completed': stagesCompleted,
@@ -212,12 +245,11 @@ class DatabaseOperations {
       var rp = 0;
       if (summary['Match Result'] == 'Win')
         rp += 2;
-      else if (summary['Match Result'] == 'Draw') 
-        rp += 1;
+      else if (summary['Match Result'] == 'Draw') rp += 1;
       if (int.parse(endgame['Total Points'].toString()) >= 65) {
         rp += 1;
       }
-      if(int.parse(endgame['Stages Completed'].toString()) == 3) {
+      if (int.parse(endgame['Stages Completed'].toString()) == 3) {
         rp += 1;
       }
       // if (int.parse(summary['Stages Completed'].toString()) == 3)
@@ -233,12 +265,24 @@ class DatabaseOperations {
           'Bottom Port': int.parse(auton['Bottom Port'].toString()) +
               teleop['Bottom Port'] +
               endgame['Bottom Port'],
+          'Bottom Port Missed':
+              int.parse(auton['Bottom Port Missed'].toString()) +
+                  teleop['Bottom Port Missed'] +
+                  endgame['Bottom Port Missed'],
           'Outer Port': int.parse(auton['Outer Port'].toString()) +
               teleop['Outer Port'] +
               endgame['Outer Port'],
+          'Outer Port Missed':
+              int.parse(auton['Outer Port Missed'].toString()) +
+                  teleop['Outer Port Missed'] +
+                  endgame['Outer Port Missed'],
           'Inner Port': int.parse(auton['Inner Port'].toString()) +
               teleop['Inner Port'] +
               endgame['Inner Port'],
+          'Inner Port Missed':
+              int.parse(auton['Inner Port Missed'].toString()) +
+                  teleop['Inner Port Missed'] +
+                  endgame['Inner Port Missed'],
           'Rotation Control': teleop['Rotation Control'],
           'Position Control': teleop['Position Control'],
           'Ending State': endgame['Ending State'],
