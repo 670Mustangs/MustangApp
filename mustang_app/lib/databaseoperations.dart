@@ -11,8 +11,16 @@ class DatabaseOperations {
 
   void startPitScouting(String teamNumber) {
     db.collection('teams').document('Team Number: ' + teamNumber).setData({
-      'Pit Scouting': {
-        'Example Text': '',
+            'Pit Scouting': {
+        'Drivebase Type': "",
+        'Inner Port': false,
+        'Outer Port': false,
+        'Bottom Port': false,
+        'Rotation Control': false,
+        'Position Control': false,
+        'Climber': false,
+        'Leveller': false,
+        'Notes': "",
       }
     }, merge: true);
     db
