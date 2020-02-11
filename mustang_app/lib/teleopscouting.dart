@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mustang_app/counter.dart';
 
 import './endgamescouting.dart';
 import './header.dart';
@@ -23,9 +24,9 @@ class _TeleopScouterState extends State<TeleopScouter> {
   String _teamNumber;
   String _matchNumber;
   DatabaseOperations db = new DatabaseOperations();
-  TextEditingController _bottomPortController = TextEditingController();
-  TextEditingController _outerPortController = TextEditingController();
-  TextEditingController _innerPortController = TextEditingController();
+  Counter _bottomPortController = Counter('Bottom Port');
+  Counter _outerPortController = Counter('Outer Port');
+  Counter _innerPortController = Counter('Inner Port');
 
   bool _rotationControl = false;
   bool _positionControl = false;
@@ -47,35 +48,17 @@ class _TeleopScouterState extends State<TeleopScouter> {
             Container(
               padding:
                   EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
-              child: TextField(
-                controller: _bottomPortController,
-                decoration: InputDecoration(
-                  labelText: 'Bottom Port',
-                  border: OutlineInputBorder(),
-                ),
-              ),
+              child: _bottomPortController,
             ),
             Container(
               padding:
                   EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
-              child: TextField(
-                controller: _outerPortController,
-                decoration: InputDecoration(
-                  labelText: 'Outer Port',
-                  border: OutlineInputBorder(),
-                ),
-              ),
+              child: _outerPortController,
             ),
             Container(
               padding:
                   EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
-              child: TextField(
-                controller: _innerPortController,
-                decoration: InputDecoration(
-                  labelText: 'Inner Port',
-                  border: OutlineInputBorder(),
-                ),
-              ),
+              child: _innerPortController,
             ),
             Container(
               padding: EdgeInsets.all(15),
@@ -107,8 +90,7 @@ class _TeleopScouterState extends State<TeleopScouter> {
                 onChanged: (bool value) {
                   setState(() {
                     _positionControl = value;
-                    if(_positionControl)
-                      _rotationControl = true;
+                    if (_positionControl) _rotationControl = true;
                   });
                 },
               ),
@@ -117,9 +99,9 @@ class _TeleopScouterState extends State<TeleopScouter> {
               color: Colors.green,
               onPressed: () {
                 db.updateMatchDataTeleop(_teamNumber, _matchNumber,
-                    bottomPort: int.parse(_bottomPortController.text),
-                    outerPort: int.parse(_outerPortController.text),
-                    innerPort: int.parse(_innerPortController.text),
+                    bottomPort: _bottomPortController.count,
+                    outerPort: _outerPortController.count,
+                    innerPort: _innerPortController.count,
                     positionControl: _positionControl,
                     rotationControl: _rotationControl);
                 Navigator.push(

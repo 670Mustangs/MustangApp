@@ -37,7 +37,7 @@ class _PitScouterState extends State<PitScouter> {
             Container(
               padding:
                   EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
-              child: Counter(),
+              child: Counter("Example"),
             ),
             RaisedButton(
               onPressed: () {

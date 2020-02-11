@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mustang_app/counter.dart';
 
 import './header.dart';
 import './teleopscouting.dart';
@@ -20,15 +21,16 @@ class AutonScouter extends StatefulWidget {
 
 class _AutonScouterState extends State<AutonScouter> {
   String _teamNumber, _matchNumber;
-  TextEditingController _bottomPortController = TextEditingController();
-  TextEditingController _outerPortController = TextEditingController();
-  TextEditingController _innerPortController = TextEditingController();
+  Counter _bottomPortController = Counter('Bottom Port');
+  Counter _outerPortController = Counter("Outer Port");
+  Counter _innerPortController;
   bool _crossedInitiationLine = false;
   DatabaseOperations db = new DatabaseOperations();
 
   _AutonScouterState(teamNumber, matchNumber) {
     _teamNumber = teamNumber;
     _matchNumber = matchNumber;
+    _innerPortController = Counter('Inner Port');
   }
   @override
   Widget build(BuildContext context) {
@@ -57,42 +59,24 @@ class _AutonScouterState extends State<AutonScouter> {
               Container(
                 padding:
                     EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
-                child: TextField(
-                  controller: _bottomPortController,
-                  decoration: InputDecoration(
-                    labelText: 'Bottom Port',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
+                child: _bottomPortController,
               ),
               Container(
                 padding:
                     EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
-                child: TextField(
-                  controller: _outerPortController,
-                  decoration: InputDecoration(
-                    labelText: 'Outer Port',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
+                child: _outerPortController,
               ),
               Container(
                 padding:
                     EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
-                child: TextField(
-                  controller: _innerPortController,
-                  decoration: InputDecoration(
-                    labelText: 'Inner Port',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
+                child: _innerPortController,
               ),
               RaisedButton(
                 onPressed: () {
                   db.updateMatchDataAuton(_teamNumber, _matchNumber,
-                      innerPort: int.parse(_innerPortController.text),
-                      outerPort: int.parse(_outerPortController.text),
-                      bottomPort: int.parse(_bottomPortController.text),
+                      innerPort: _innerPortController.count,
+                      outerPort: _outerPortController.count,
+                      bottomPort: _bottomPortController.count,
                       crossedLine: _crossedInitiationLine);
                   Navigator.push(
                       context,

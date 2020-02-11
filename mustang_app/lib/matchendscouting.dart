@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mustang_app/counter.dart';
 
 import './databaseoperations.dart';
 import './header.dart';
@@ -23,7 +24,7 @@ class _MatchEndScouterState extends State<MatchEndScouter> {
   String _matchNumber;
   TextEditingController _finalCommentsController = TextEditingController();
   TextEditingController _namesController = TextEditingController();
-  TextEditingController _foulsController = TextEditingController();
+  Counter _foulsController = Counter('Fouls');
   String _matchResult;
   DatabaseOperations db = new DatabaseOperations();
 
@@ -65,13 +66,7 @@ class _MatchEndScouterState extends State<MatchEndScouter> {
             Container(
               padding:
                   EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
-              child: TextField(
-                controller: _foulsController,
-                decoration: InputDecoration(
-                  labelText: 'Fouls',
-                  border: OutlineInputBorder(),
-                ),
-              ),
+              child: _foulsController,
             ),
             Container(
               padding:
@@ -99,7 +94,7 @@ class _MatchEndScouterState extends State<MatchEndScouter> {
                 color: Colors.green,
                 onPressed: () {
                   db.updateMatchDataEnd(_teamNumber, _matchNumber,
-                      fouls: int.parse(_foulsController.text),
+                      fouls: _foulsController.count,
                       finalComments: _finalCommentsController.text,
                       names: _namesController.text,
                       matchResult: _matchResult);

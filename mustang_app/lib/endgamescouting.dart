@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mustang_app/counter.dart';
 
 import './matchendscouting.dart';
 import './databaseoperations.dart';
@@ -20,11 +21,10 @@ class EndgameScouter extends StatefulWidget {
 class _EndgameScouterState extends State<EndgameScouter> {
   String _teamNumber;
   String _matchNumber;
-  TextEditingController _bottomPortController = TextEditingController();
-  TextEditingController _outerPortController = TextEditingController();
-  TextEditingController _innerPortController = TextEditingController();
-  TextEditingController _stagesCompletedController =
-      new TextEditingController();
+  Counter _bottomPortController = Counter('Bottom Port');
+  Counter _outerPortController = Counter('Outer Port');
+  Counter _innerPortController = Counter('Inner Port');
+  Counter _stagesCompletedController = new Counter('Stages Completed');
   String _endingState;
   DatabaseOperations db = new DatabaseOperations();
 
@@ -45,46 +45,22 @@ class _EndgameScouterState extends State<EndgameScouter> {
             Container(
               padding:
                   EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
-              child: TextField(
-                controller: _bottomPortController,
-                decoration: InputDecoration(
-                  labelText: 'Bottom Port',
-                  border: OutlineInputBorder(),
-                ),
-              ),
+              child: _bottomPortController,
             ),
             Container(
               padding:
                   EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
-              child: TextField(
-                controller: _outerPortController,
-                decoration: InputDecoration(
-                  labelText: 'Outer Port',
-                  border: OutlineInputBorder(),
-                ),
-              ),
+              child: _outerPortController,
             ),
             Container(
               padding:
                   EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
-              child: TextField(
-                controller: _innerPortController,
-                decoration: InputDecoration(
-                  labelText: 'Inner Port',
-                  border: OutlineInputBorder(),
-                ),
-              ),
+              child: _innerPortController,
             ),
             Container(
               padding:
                   EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
-              child: TextField(
-                controller: _stagesCompletedController,
-                decoration: InputDecoration(
-                  labelText: 'Stages Completed',
-                  border: OutlineInputBorder(),
-                ),
-              ),
+              child: _stagesCompletedController,
             ),
             Container(
               padding:
@@ -111,11 +87,10 @@ class _EndgameScouterState extends State<EndgameScouter> {
                 color: Colors.green,
                 onPressed: () {
                   db.updateMatchDataEndgame(_teamNumber, _matchNumber,
-                      bottomPort: int.parse(_bottomPortController.text),
-                      outerPort: int.parse(_outerPortController.text),
-                      innerPort: int.parse(_innerPortController.text),
-                      stagesCompleted:
-                          int.parse(_stagesCompletedController.text),
+                      bottomPort: _bottomPortController.count,
+                      outerPort: _outerPortController.count,
+                      innerPort: _innerPortController.count,
+                      stagesCompleted: _stagesCompletedController.count,
                       endState: _endingState);
                   Navigator.push(
                       context,
