@@ -21,10 +21,28 @@ class DatabaseOperations {
         .updateData({'Team Number': teamNumber});
   }
 
-  void updatePitScouting(String teamNumber, {String text}) {
+  void updatePitScouting(String teamNumber,
+      {bool drivebaseTall,
+      drivebaseShort,
+      inner,
+      outer,
+      bottom,
+      rotation,
+      position,
+      climb,
+      leveller,
+      String notes}) {
     db.collection('teams').document('Team Number: ' + teamNumber).updateData({
       'Pit Scouting': {
-        'Example Text': text,
+        'Drivebase Type': drivebaseTall ? "Tall" : "Short",
+        'Inner Port': inner,
+        'Outer Port': outer,
+        'Bottom Port': bottom,
+        'Rotation Control': rotation,
+        'Position Control': position,
+        'Climber': climb,
+        'Leveller': leveller,
+        'Notes': notes
       }
     });
   }
