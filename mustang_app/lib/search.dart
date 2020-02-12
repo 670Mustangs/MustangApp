@@ -12,67 +12,57 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  var queryResultSet = [];
   var tempSearchStore = [];
   var allTeams = [];
   TextEditingController _queryController = new TextEditingController();
 
   _SearchPageState() {
-    // Firestore.instance.collection('teams').getDocuments().then((onValue) {
-    //   onValue.documents.forEach((element) {
-    //     allTeams.add('Team ' + element['Team Number']);
-    //   });
-    // });
-    initAllTeams();
-  }
-
-  void initAllTeams() async {
-        var docs = await Firestore.instance.collection('teams').getDocuments();
-    docs.documents.forEach((f) {
-      allTeams.add('Team ' + f['Team Number']);
+    initAllTeams().then((onValue) {
+      setState(() {});
     });
   }
 
-  searchByName(String searchField) {
-    if (searchField.isEmpty) return;
+  Future<void> initAllTeams() async {
+    var docs = await Firestore.instance.collection('teams').getDocuments();
+    docs.documents.forEach((f) {
+      allTeams.add(f.documentID);
+    });
+    tempSearchStore = allTeams;
+  }
 
-    return Firestore.instance
+  Future<QuerySnapshot> searchByName(String searchField) async {
+    if (searchField.isEmpty) return null;
+
+    var docs = await Firestore.instance
         .collection('teams')
         .where('Team Number', isEqualTo: searchField)
         .getDocuments();
+    return docs;
   }
 
-  initiateSearch(value) {
+  initiateSearch(value) async {
     if (value.length == 0) {
       setState(() {
-        queryResultSet = [];
-        tempSearchStore = [];
+        tempSearchStore = allTeams;
       });
+      return;
     }
 
-    // var capitalizedValue =
-    //     value.substring(0, 1).toUpperCase() + value.substring(1);
-
-    if (queryResultSet.length == 0) {
-      searchByName(value).then((QuerySnapshot docs) {
-        for (int i = 0; i < docs.documents.length; ++i) {
-          queryResultSet.add(docs.documents[i].data);
-        }
-      });
-    } else {
-      tempSearchStore = [];
-      queryResultSet.forEach((element) {
-        if (element['Team Number'].startsWith(value)) {
-          setState(() {
-            tempSearchStore.add('Team ' + element['Team Number']);
-          });
-        }
-      });
-    }
+    print('else ' + value);
+    tempSearchStore = [];
+    allTeams.forEach((element) {
+      if (element.startsWith(value)) {
+        setState(() {
+          tempSearchStore.add(element);
+        });
+      }
+    });
+    setState((){});
   }
 
   @override
   Widget build(BuildContext context) {
+    print("hello " + tempSearchStore.toString());
     return new Scaffold(
       appBar: new Header(
         context,
@@ -81,7 +71,7 @@ class _SearchPageState extends State<SearchPage> {
       body: Column(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: EdgeInsets.all(10.0),
             child: TextField(
               controller: _queryController,
               onChanged: (val) {
@@ -105,52 +95,41 @@ class _SearchPageState extends State<SearchPage> {
           ),
           // SizedBox(height: 10.0),
           Container(
-            height: 40,
-            child: (_queryController.text.isNotEmpty &&
-                    tempSearchStore.isNotEmpty)
-                ? (ListView.builder(
-                    itemCount: tempSearchStore.length,
-                    itemBuilder: (context, index) => ListTile(
-                      onTap: () {
-                        Navigator.pushNamed(context, TeamInfoDisplay.route);
-                      },
-                      leading: Icon(Icons.people),
-                      title: RichText(
-                        text: TextSpan(
-                          text: tempSearchStore[index]
-                              .substring(0, 5 + _queryController.text.length),
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: tempSearchStore[index]
-                                  .substring(5 + _queryController.text.length),
-                              style: TextStyle(
-                                color: Colors.grey,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
+            height: 500,
+            child: (ListView.builder(
+              itemCount: tempSearchStore.length,
+              itemBuilder: (context, index) => ListTile(
+                onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TeamInfoDisplay(
+                      tempSearchStore[index]
                     ),
-                  ))
-                : (ListView.builder(
-                    itemCount: allTeams.length,
-                    itemBuilder: (context, index) => ListTile(
-                      onTap: () {
-                        Navigator.pushNamed(context, TeamInfoDisplay.route);
-                      },
-                      leading: Icon(Icons.people),
-                      title: Text(
-                        allTeams[index],
+                  ),
+                );                },
+                leading: Icon(Icons.people),
+                title: RichText(
+                  text: TextSpan(
+                    text: tempSearchStore[index]
+                        .substring(0, _queryController.text.length),
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: tempSearchStore[index]
+                            .substring(_queryController.text.length),
                         style: TextStyle(
                           color: Colors.grey,
                         ),
-                      ),
-                    ),
-                  )),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            )),
           ),
           // GridView.count(
           //     padding: EdgeInsets.only(left: 10.0, right: 10.0),

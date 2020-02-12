@@ -1,9 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mustang_app/header.dart';
 
 class TeamInfoDisplay extends StatelessWidget {
 
-  static const String route = './TeamInfoDisplay';
+  String _team;
+
+  TeamInfoDisplay(String team) {
+    _team = team;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +17,7 @@ class TeamInfoDisplay extends StatelessWidget {
         context,
         'Info',
       ),
-      body: Text('Info'),
+      body: Text(_team),
     );
   }
 }
