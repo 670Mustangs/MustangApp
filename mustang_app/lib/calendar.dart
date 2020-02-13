@@ -84,8 +84,6 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    BottomNavBar nav = new BottomNavBar(context);
-    nav.setSelected(Calendar.route);
     return Scaffold(
       appBar: Header(context, 'Calendar'),
       body: Column(
@@ -101,7 +99,7 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
           Expanded(child: _buildEventList()),
         ],
       ),
-      bottomNavigationBar: nav,
+      bottomNavigationBar: BottomNavBar(context),
     );
   }
 

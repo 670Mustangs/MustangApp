@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:mustang_app/bottomnavbar.dart';
 import 'package:mustang_app/databaseoperations.dart';
 import 'package:mustang_app/header.dart';
 import 'package:mustang_app/teaminfodisplay.dart';
@@ -62,9 +61,6 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    BottomNavBar nav = new BottomNavBar(context);
-    nav.setSelected(SearchPage.route);
-
     return new Scaffold(
       appBar: new Header(
         context,
@@ -96,8 +92,8 @@ class _SearchPageState extends State<SearchPage> {
           ),
           // SizedBox(height: 10.0),
           Container(
+            height: 500,
             child: (ListView.builder(
-              shrinkWrap: true,
               itemCount: tempSearchStore.length,
               itemBuilder: (context, index) => ListTile(
                 onTap: () {
@@ -144,7 +140,6 @@ class _SearchPageState extends State<SearchPage> {
           //     }).toList())
         ],
       ),
-      bottomNavigationBar: nav,
     );
   }
 }

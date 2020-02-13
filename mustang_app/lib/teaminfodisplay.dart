@@ -25,8 +25,9 @@ class _TeamInfoDisplayState extends State<TeamInfoDisplay> {
     _team = team;
     getData().then((onValue) {
       setState(() {});
-    }).catchError((onError) {
-      print(onError.toString());
+      print(_pitData);
+      print('\n');
+      print(_matchData);
     });
   }
 

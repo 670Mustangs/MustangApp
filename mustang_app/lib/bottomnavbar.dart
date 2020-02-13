@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mustang_app/homepage.dart';
 import 'package:mustang_app/sketcher.dart';
 
 import './calendar.dart';
@@ -10,16 +9,12 @@ class BottomNavBar extends BottomNavigationBar {
   static int _selectedIndex = 0;
 
   static final routes = [
-    HomePage.route,
+    '/',
     Calendar.route,
     Scouter.route,
     SearchPage.route,
     SketchPage.route,
   ];
-
-  void setSelected(String route) {
-    _selectedIndex = routes.indexOf(route);
-  }
 
   BottomNavBar(BuildContext context)
       : super(
@@ -50,6 +45,7 @@ class BottomNavBar extends BottomNavigationBar {
           selectedItemColor: Colors.green,
           onTap: (int index) {
             _selectedIndex = index;
+            Navigator.of(context).pushNamed('/');
             Navigator.of(context).pushNamed(routes[index]);
           },
         );
