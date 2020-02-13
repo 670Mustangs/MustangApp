@@ -48,7 +48,6 @@ class _SearchPageState extends State<SearchPage> {
       return;
     }
 
-    print('else ' + value);
     tempSearchStore = [];
     allTeams.forEach((element) {
       if (element.startsWith(value)) {
@@ -62,7 +61,6 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("hello " + tempSearchStore.toString());
     return new Scaffold(
       appBar: new Header(
         context,
@@ -76,7 +74,6 @@ class _SearchPageState extends State<SearchPage> {
               controller: _queryController,
               onChanged: (val) {
                 initiateSearch(val);
-                print(tempSearchStore);
               },
               decoration: InputDecoration(
                   prefixIcon: IconButton(
