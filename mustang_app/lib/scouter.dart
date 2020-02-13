@@ -23,6 +23,8 @@ class _ScouterState extends State<Scouter> {
 
   @override
   Widget build(BuildContext context) {
+    BottomNavBar nav = new BottomNavBar(context);
+    nav.setSelected(Scouter.route);
     return Scaffold(
       appBar: Header(
         context,
@@ -106,7 +108,7 @@ class _ScouterState extends State<Scouter> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavBar(context),
+      bottomNavigationBar: nav,
     );
   }
 }

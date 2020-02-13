@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:mustang_app/bottomnavbar.dart';
 
 class SketchPage extends StatefulWidget {
   static const String route = './Sketcher';
@@ -79,7 +80,9 @@ class _SketchPageState extends State<SketchPage> {
         painter: _sketcher,
       ),
     );
-
+    BottomNavBar nav = new BottomNavBar(context);
+    nav.setSelected(SketchPage.route);
+    
     return Scaffold(
       appBar: AppBar(
         title: Text('Sketcher'),
@@ -122,6 +125,7 @@ class _SketchPageState extends State<SketchPage> {
               })
         ],
       ),
+      bottomNavigationBar: nav,
     );
   }
 }
