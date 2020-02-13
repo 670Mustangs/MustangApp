@@ -39,7 +39,7 @@ class _AutonScouterState extends State<AutonScouter> {
     return Scaffold(
         appBar: Header(context, 'Auton'),
         body: Center(
-          child: Column(
+          child: ListView(
             children: <Widget>[
               Container(
                 padding: EdgeInsets.all(15),
@@ -73,7 +73,7 @@ class _AutonScouterState extends State<AutonScouter> {
                     EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
                 child: _outerPort,
               ),
-                            Container(
+              Container(
                 padding:
                     EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
                 child: _outerPortMissed,
@@ -88,32 +88,36 @@ class _AutonScouterState extends State<AutonScouter> {
                     EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
                 child: _innerPortMissed,
               ),
-              RaisedButton(
-                onPressed: () {
-                  db.updateMatchDataAuton(_teamNumber, _matchNumber,
-                      innerPort: _innerPort.count,
-                      innerPortMissed: _innerPortMissed.count,
-                      outerPort: _outerPort.count,
-                      outerPortMissed: _outerPortMissed.count,
-                      bottomPort: _bottomPort.count,
-                      bottomPortMissed: _bottomPortMissed.count,
-                      crossedLine: _crossedInitiationLine);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              TeleopScouter(_teamNumber, _matchNumber)));
-                  // Navigator.pushNamed(context, TeleopScouter.route);
-                },
-                child: Text(
-                  'Next',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
+              Container(
+                padding:
+                    EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
+                child: RaisedButton(
+                  onPressed: () {
+                    db.updateMatchDataAuton(_teamNumber, _matchNumber,
+                        innerPort: _innerPort.count,
+                        innerPortMissed: _innerPortMissed.count,
+                        outerPort: _outerPort.count,
+                        outerPortMissed: _outerPortMissed.count,
+                        bottomPort: _bottomPort.count,
+                        bottomPortMissed: _bottomPortMissed.count,
+                        crossedLine: _crossedInitiationLine);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                TeleopScouter(_teamNumber, _matchNumber)));
+                    // Navigator.pushNamed(context, TeleopScouter.route);
+                  },
+                  child: Text(
+                    'Next',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
                   ),
+                  color: Colors.green,
+                  padding: EdgeInsets.all(15),
                 ),
-                color: Colors.green,
-                padding: EdgeInsets.all(15),
               ),
             ],
           ),

@@ -15,7 +15,7 @@ class PostScouter extends StatelessWidget {
           'Finished!',
         ),
         body: Center(
-          child: Column(
+          child: ListView(
             children: <Widget>[
               Container(
                 margin:

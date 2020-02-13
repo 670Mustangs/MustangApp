@@ -28,7 +28,7 @@ class _ScouterState extends State<Scouter> {
         context,
         'Pre Scouting Info',
       ),
-      body: Column(
+      body: ListView(
         children: <Widget>[
           Container(
             padding: EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 15),
@@ -52,50 +52,56 @@ class _ScouterState extends State<Scouter> {
               ),
             ),
           ),
-          RaisedButton(
-            color: Colors.green,
-            onPressed: () {
-              setState(() {
-                db.startPitScouting(_teamNumberController.text);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PitScouter(
-                      _teamNumberController.text,
+          Container(
+            padding: EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
+            child: RaisedButton(
+              color: Colors.green,
+              onPressed: () {
+                setState(() {
+                  db.startPitScouting(_teamNumberController.text);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PitScouter(
+                        _teamNumberController.text,
+                      ),
                     ),
-                  ),
-                );
-                // Navigator.pushNamed(context, AutonScouter.route);
-              });
-            },
-            padding: EdgeInsets.all(15),
-            child: Text(
-              'Pit Scouting',
-              style: TextStyle(fontSize: 20, color: Colors.white),
+                  );
+                  // Navigator.pushNamed(context, AutonScouter.route);
+                });
+              },
+              padding: EdgeInsets.all(15),
+              child: Text(
+                'Pit Scouting',
+                style: TextStyle(fontSize: 20, color: Colors.white),
+              ),
             ),
           ),
-          RaisedButton(
-            color: Colors.green,
-            onPressed: () {
-              setState(() {
-                db.startNewMatch(
-                    _teamNumberController.text, _matchNumberController.text);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AutonScouter(
-                      _teamNumberController.text,
-                      _matchNumberController.text,
+          Container(
+            padding: EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
+            child: RaisedButton(
+              color: Colors.green,
+              onPressed: () {
+                setState(() {
+                  db.startNewMatch(
+                      _teamNumberController.text, _matchNumberController.text);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AutonScouter(
+                        _teamNumberController.text,
+                        _matchNumberController.text,
+                      ),
                     ),
-                  ),
-                );
-                // Navigator.pushNamed(context, AutonScouter.route);
-              });
-            },
-            padding: EdgeInsets.all(15),
-            child: Text(
-              'Match Scouting',
-              style: TextStyle(fontSize: 20, color: Colors.white),
+                  );
+                  // Navigator.pushNamed(context, AutonScouter.route);
+                });
+              },
+              padding: EdgeInsets.all(15),
+              child: Text(
+                'Match Scouting',
+                style: TextStyle(fontSize: 20, color: Colors.white),
+              ),
             ),
           ),
         ],

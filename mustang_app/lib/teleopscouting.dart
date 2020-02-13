@@ -46,38 +46,38 @@ class _TeleopScouterState extends State<TeleopScouter> {
           context,
           'Teleop',
         ),
-        body: Column(
+        body: ListView(
           children: <Widget>[
             Container(
-                padding:
-                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
-                child: _bottomPort,
-              ),
-              Container(
-                padding:
-                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
-                child: _bottomPortMissed,
-              ),
-              Container(
-                padding:
-                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
-                child: _outerPort,
-              ),
-                            Container(
-                padding:
-                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
-                child: _outerPortMissed,
-              ),
-              Container(
-                padding:
-                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
-                child: _innerPort,
-              ),
-              Container(
-                padding:
-                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
-                child: _innerPortMissed,
-              ),
+              padding:
+                  EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+              child: _bottomPort,
+            ),
+            Container(
+              padding:
+                  EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+              child: _bottomPortMissed,
+            ),
+            Container(
+              padding:
+                  EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+              child: _outerPort,
+            ),
+            Container(
+              padding:
+                  EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+              child: _outerPortMissed,
+            ),
+            Container(
+              padding:
+                  EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+              child: _innerPort,
+            ),
+            Container(
+              padding:
+                  EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+              child: _innerPortMissed,
+            ),
             Container(
               padding: EdgeInsets.all(15),
               child: SwitchListTile(
@@ -113,31 +113,35 @@ class _TeleopScouterState extends State<TeleopScouter> {
                 },
               ),
             ),
-            RaisedButton(
-              color: Colors.green,
-              onPressed: () {
-                db.updateMatchDataTeleop(_teamNumber, _matchNumber,
+            Container(
+              padding:
+                  EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
+              child: RaisedButton(
+                color: Colors.green,
+                onPressed: () {
+                  db.updateMatchDataTeleop(_teamNumber, _matchNumber,
                       innerPort: _innerPort.count,
                       innerPortMissed: _innerPortMissed.count,
                       outerPort: _outerPort.count,
                       outerPortMissed: _outerPortMissed.count,
                       bottomPort: _bottomPort.count,
                       bottomPortMissed: _bottomPortMissed.count,
-                    positionControl: _positionControl,
-                    rotationControl: _rotationControl);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            EndgameScouter(_teamNumber, _matchNumber)));
-                // Navigator.pushNamed(context, EndgameScouter.route);
-              },
-              padding: EdgeInsets.all(15),
-              child: Text(
-                'Next',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
+                      positionControl: _positionControl,
+                      rotationControl: _rotationControl);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              EndgameScouter(_teamNumber, _matchNumber)));
+                  // Navigator.pushNamed(context, EndgameScouter.route);
+                },
+                padding: EdgeInsets.all(15),
+                child: Text(
+                  'Next',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),

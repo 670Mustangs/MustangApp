@@ -40,7 +40,7 @@ class _MatchEndScouterState extends State<MatchEndScouter> {
           context,
           'Match End',
         ),
-        body: Column(
+        body: ListView(
           children: <Widget>[
             Container(
               padding:
@@ -90,24 +90,28 @@ class _MatchEndScouterState extends State<MatchEndScouter> {
                 ),
               ),
             ),
-            RaisedButton(
-                color: Colors.green,
-                onPressed: () {
-                  db.updateMatchDataEnd(_teamNumber, _matchNumber,
-                      fouls: _fouls.count,
-                      finalComments: _finalCommentsController.text,
-                      names: _namesController.text,
-                      matchResult: _matchResult);
-                  Navigator.pushNamed(context, PostScouter.route);
-                },
-                padding: EdgeInsets.all(15),
-                child: Text(
-                  'Submit',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                  ),
-                ))
+            Container(
+              padding:
+                  EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
+              child: RaisedButton(
+                  color: Colors.green,
+                  onPressed: () {
+                    db.updateMatchDataEnd(_teamNumber, _matchNumber,
+                        fouls: _fouls.count,
+                        finalComments: _finalCommentsController.text,
+                        names: _namesController.text,
+                        matchResult: _matchResult);
+                    Navigator.pushNamed(context, PostScouter.route);
+                  },
+                  padding: EdgeInsets.all(15),
+                  child: Text(
+                    'Submit',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
+                  )),
+            )
           ],
         ));
   }

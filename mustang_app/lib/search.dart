@@ -66,7 +66,7 @@ class _SearchPageState extends State<SearchPage> {
         context,
         'Search Data',
       ),
-      body: Column(
+      body: ListView(
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(10.0),

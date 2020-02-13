@@ -54,9 +54,16 @@ class _TeamInfoDisplayState extends State<TeamInfoDisplay> {
       appBar: Header(context, _team),
       body: ListView(
         children: <Widget>[
-          (_matchData == null)
+          (_matchData.isEmpty)
               ? (ListTile(
-                  title: Text('No Matches Yet'),
+                  title: Text(
+                    'No Matches Yet',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
                 ))
               : (ExpansionTile(
                   title: Text("Match Data"),
@@ -78,10 +85,24 @@ class _TeamInfoDisplayState extends State<TeamInfoDisplay> {
                               children: <Widget>[
                                 ListView.builder(
                                   shrinkWrap: true,
-                                  itemCount: _matchData[index].values.toList()[index2].length,
+                                  itemCount: _matchData[index]
+                                      .values
+                                      .toList()[index2]
+                                      .length,
                                   itemBuilder: (context, index3) => ListTile(
-                                    title: Text(_matchData[index].values.toList()[index2].keys.toList()[index3].toString() + ": " + _matchData[index].values.toList()[index2].values.toList()[index3].toString())
-                                  ),
+                                      title: Text(_matchData[index]
+                                              .values
+                                              .toList()[index2]
+                                              .keys
+                                              .toList()[index3]
+                                              .toString() +
+                                          ": " +
+                                          _matchData[index]
+                                              .values
+                                              .toList()[index2]
+                                              .values
+                                              .toList()[index3]
+                                              .toString())),
                                 )
                               ],
                             ),
@@ -91,9 +112,16 @@ class _TeamInfoDisplayState extends State<TeamInfoDisplay> {
                     )
                   ],
                 )),
-          (_pitData == null)
+          (_pitData.isEmpty)
               ? (ListTile(
-                  title: Text('No Pit Data Yet'),
+                  title: Text(
+                    'No Pit Data Yet',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
                 ))
               : (ExpansionTile(
                   title: Text("Pit Scouting"),
