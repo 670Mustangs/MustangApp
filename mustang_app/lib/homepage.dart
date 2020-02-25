@@ -15,7 +15,7 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
       return Scaffold(
       appBar: AppBar(
-        title: Text('Welcome'),
+        title: Text('Home'),
       ),
       body: Center(
         child: Text('Welcome!', style: TextStyle(color: Colors.green, fontSize: 30, fontWeight: FontWeight.bold,)),
