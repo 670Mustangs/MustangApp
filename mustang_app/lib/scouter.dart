@@ -21,6 +21,65 @@ class _ScouterState extends State<Scouter> {
   bool _showError = false;
   DatabaseOperations db = new DatabaseOperations();
 
+  showAlertDialog(BuildContext context, bool pit) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Override"),
+      onPressed: () {
+        Navigator.pop(context);
+        if (pit) {
+          db.startPitScouting(_teamNumberController.text);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PitScouter(
+                _teamNumberController.text,
+              ),
+            ),
+          );
+        } else {
+          db.startNewMatch(
+              _teamNumberController.text, _matchNumberController.text);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AutonScouter(
+                _teamNumberController.text,
+                _matchNumberController.text,
+              ),
+            ),
+          );
+        }
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Overwrite Data"),
+      content: Text(pit
+          ? "Pit data for this team already.\nAre you sure you want to overwrite it?"
+          : "Match data for this team and match number already.\nAre you sure you want to overwrite it?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,53 +113,95 @@ class _ScouterState extends State<Scouter> {
           ),
           Container(
             padding: EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
-            child: RaisedButton(
-              color: Colors.green,
-              onPressed: () {
-                setState(() {
-                  db.startPitScouting(_teamNumberController.text);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PitScouter(
-                        _teamNumberController.text,
-                      ),
-                    ),
-                  );
-                  // Navigator.pushNamed(context, AutonScouter.route);
-                });
-              },
-              padding: EdgeInsets.all(15),
-              child: Text(
-                'Pit Scouting',
-                style: TextStyle(fontSize: 20, color: Colors.white),
+            child: new Builder(
+              builder: (BuildContext buildContext) => RaisedButton(
+                color: Colors.green,
+                onPressed: () {
+                  if (_teamNumberController.text.isEmpty) {
+                    Scaffold.of(buildContext).showSnackBar(SnackBar(
+                      content: Text("Enter a team number"),
+                    ));
+                    return;
+                  } else if (_matchNumberController.text.isEmpty) {
+                    Scaffold.of(buildContext).showSnackBar(SnackBar(
+                      content: Text("Enter a match number"),
+                    ));
+                    return;
+                  }
+                  setState(() {
+                    db
+                        .doesPitDataExist(_teamNumberController.text)
+                        .then((onValue) {
+                      if (onValue) {
+                        showAlertDialog(context, true);
+                      } else {
+                        db.startPitScouting(_teamNumberController.text);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PitScouter(
+                              _teamNumberController.text,
+                            ),
+                          ),
+                        );
+                      }
+                    });
+                  });
+                },
+                padding: EdgeInsets.all(15),
+                child: Text(
+                  'Pit Scouting',
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                ),
               ),
             ),
           ),
           Container(
             padding: EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
-            child: RaisedButton(
-              color: Colors.green,
-              onPressed: () {
-                setState(() {
-                  db.startNewMatch(
-                      _teamNumberController.text, _matchNumberController.text);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AutonScouter(
-                        _teamNumberController.text,
-                        _matchNumberController.text,
-                      ),
-                    ),
-                  );
-                  // Navigator.pushNamed(context, AutonScouter.route);
-                });
-              },
-              padding: EdgeInsets.all(15),
-              child: Text(
-                'Match Scouting',
-                style: TextStyle(fontSize: 20, color: Colors.white),
+            child: new Builder(
+              builder: (BuildContext buildContext) => new RaisedButton(
+                color: Colors.green,
+                onPressed: () {
+                  setState(() {
+                    if (_teamNumberController.text.isEmpty) {
+                      Scaffold.of(buildContext).showSnackBar(SnackBar(
+                        content: Text("Enter a team number"),
+                      ));
+                      return;
+                    } else if (_matchNumberController.text.isEmpty) {
+                      Scaffold.of(buildContext).showSnackBar(SnackBar(
+                        content: Text("Enter a match number"),
+                      ));
+                      return;
+                    }
+                    db
+                        .doesMatchDataExist(_teamNumberController.text,
+                            _matchNumberController.text)
+                        .then((onValue) {
+                      if (onValue) {
+                        showAlertDialog(context, false);
+                      } else {
+                        db.startNewMatch(_teamNumberController.text,
+                            _matchNumberController.text);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AutonScouter(
+                              _teamNumberController.text,
+                              _matchNumberController.text,
+                            ),
+                          ),
+                        );
+                      }
+                    });
+                    // Navigator.pushNamed(context, AutonScouter.route);
+                  });
+                },
+                padding: EdgeInsets.all(15),
+                child: Text(
+                  'Match Scouting',
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                ),
               ),
             ),
           ),

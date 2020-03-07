@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class DatabaseOperations {
   Firestore db;
@@ -11,7 +12,7 @@ class DatabaseOperations {
 
   void startPitScouting(String teamNumber) {
     db.collection('teams').document('Team Number: ' + teamNumber).setData({
-            'Pit Scouting': {
+      'Pit Scouting': {
         'Drivebase Type': "",
         'Inner Port': false,
         'Outer Port': false,
@@ -127,11 +128,6 @@ class DatabaseOperations {
         'Stages Completed': 0,
       }
     }, merge: true);
-
-    // db
-    //     .collection('teams')
-    //     .document('Team Number: ' + teamNumber)
-    //     .updateData({'Team Number': teamNumber});
   }
 
   void updateMatchDataAuton(String teamNumber, String matchNumber,
@@ -323,6 +319,104 @@ class DatabaseOperations {
           'Stages Completed': summary['Stages Completed'],
         }
       });
+    });
+  }
+
+  Future<bool> doesPitDataExist(String teamNumber) async {
+    Map<String, dynamic> empty = {
+      'Drivebase Type': "",
+      'Inner Port': false,
+      'Outer Port': false,
+      'Bottom Port': false,
+      'Rotation Control': false,
+      'Position Control': false,
+      'Climber': false,
+      'Leveller': false,
+      'Notes': "",
+    };
+    return await db
+        .collection('teams')
+        .document('Team Number: ' + teamNumber)
+        .get()
+        .then((onValue) {
+      if (onValue == null) {
+        return false;
+      } else if (onValue.data == empty) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+  }
+
+  Future<bool> doesMatchDataExist(String teamNumber, String matchNumber) async {
+    Map<String, dynamic> empty = {
+      'Auton': {
+        'Bottom Port': 0,
+        'Outer Port': 0,
+        'Inner Port': 0,
+        'Bottom Port Missed': 0,
+        'Inner Port Missed': 0,
+        'Outer Port Missed': 0,
+        'Crossed Initiation Line': false,
+        'Total Points': 0,
+      },
+      'Teleop': {
+        'Bottom Port': 0,
+        'Outer Port': 0,
+        'Inner Port': 0,
+        'Bottom Port Missed': 0,
+        'Inner Port Missed': 0,
+        'Outer Port Missed': 0,
+        'Rotation Control': false,
+        'Position Control': false,
+        'Total Points': 0,
+      },
+      'Endgame': {
+        'Bottom Port': 0,
+        'Outer Port': 0,
+        'Inner Port': 0,
+        'Bottom Port Missed': 0,
+        'Inner Port Missed': 0,
+        'Outer Port Missed': 0,
+        'Stages Completed': 0,
+        'Ending State': '',
+        'Total Points': 0,
+      },
+      'Summary': {
+        'Crossed Initiation Line': false,
+        'Bottom Port': 0,
+        'Outer Port': 0,
+        'Inner Port': 0,
+        'Bottom Port Missed': 0,
+        'Inner Port Missed': 0,
+        'Outer Port Missed': 0,
+        'Rotation Control': false,
+        'Position Control': false,
+        'Ending State': '',
+        'Match Result': '',
+        'Total Points': 0,
+        'Ranking Points': 0,
+        'Fouls': 0,
+        'Final Comments': '',
+        'Scouters': '',
+        'Stages Completed': 0,
+      }
+    };
+    return await db
+        .collection('teams')
+        .document('Team Number: ' + teamNumber)
+        .collection('Match Scouting')
+        .document('Match Number: ' + matchNumber)
+        .get()
+        .then((onValue) {
+      if (onValue == null) {
+        return false;
+      } else if (onValue.data == empty) {
+        return false;
+      } else {
+        return true;
+      }
     });
   }
 }

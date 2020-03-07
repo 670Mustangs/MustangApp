@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class Counter extends StatefulWidget {
-
   _CounterState lol;
   String _text;
   Counter(String text) {
     _text = text;
     lol = new _CounterState(_text);
   }
+
   int get count {
     return lol.count;
   }
@@ -48,37 +48,42 @@ class _CounterState extends State<Counter> {
     return new Container(
       child: new Center(
         child: new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Container(
-              padding: EdgeInsets.only(right: 50),
+              padding: EdgeInsets.only(right: 30),
               child: new Text(
                 _text,
                 style: new TextStyle(fontSize: 20.0),
               ),
             ),
-            new IconButton(
-              onPressed: add,
-              color: Colors.green,
-              icon: new Icon(
-                Icons.add_circle,
-                size: 25,
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 10, right: 10),
-              child: new Text(
-                '$_count',
-                style: new TextStyle(fontSize: 20.0),
-              ),
-            ),
-            new IconButton(
-              color: Colors.green,
-              onPressed: minus,
-              icon: new Icon(
-                Icons.remove_circle,
-                size: 25,
-              ),
-            ),
+            Row(
+              children: <Widget>[
+                IconButton(
+                  color: Colors.green,
+                  onPressed: minus,
+                  icon: new Icon(
+                    Icons.remove_circle,
+                    size: 25,
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(left: 10),
+                  child: new Text(
+                    '$_count',
+                    style: new TextStyle(fontSize: 20.0),
+                  ),
+                ),
+                IconButton(
+                  onPressed: add,
+                  color: Colors.green,
+                  icon: new Icon(
+                    Icons.add_circle,
+                    size: 25,
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),
