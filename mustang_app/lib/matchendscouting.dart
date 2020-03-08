@@ -23,7 +23,6 @@ class _MatchEndScouterState extends State<MatchEndScouter> {
   String _teamNumber;
   String _matchNumber;
   TextEditingController _finalCommentsController = TextEditingController();
-  TextEditingController _namesController = TextEditingController();
   Counter _fouls = Counter('Fouls');
   String _matchResult;
   DatabaseOperations db = new DatabaseOperations();
@@ -81,17 +80,6 @@ class _MatchEndScouterState extends State<MatchEndScouter> {
             ),
             Container(
               padding:
-                  EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 30),
-              child: TextField(
-                controller: _namesController,
-                decoration: InputDecoration(
-                  labelText: 'Names',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ),
-            Container(
-              padding:
                   EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
               child: RaisedButton(
                   color: Colors.green,
@@ -99,7 +87,6 @@ class _MatchEndScouterState extends State<MatchEndScouter> {
                     db.updateMatchDataEnd(_teamNumber, _matchNumber,
                         fouls: _fouls.count,
                         finalComments: _finalCommentsController.text,
-                        names: _namesController.text,
                         matchResult: _matchResult);
                     Navigator.pushNamed(context, PostScouter.route);
                   },

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:mustang_app/bottomnavbar.dart';
 
 class SketchPage extends StatefulWidget {
   static const String route = './Sketcher';

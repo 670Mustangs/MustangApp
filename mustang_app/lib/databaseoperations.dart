@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 
 class DatabaseOperations {
   Firestore db;
@@ -10,7 +9,7 @@ class DatabaseOperations {
     db = Firestore.instance;
   }
 
-  void startPitScouting(String teamNumber) {
+  void startPitScouting(String teamNumber, String names) {
     db.collection('teams').document('Team Number: ' + teamNumber).setData({
       'Pit Scouting': {
         'Drivebase Type': "",
@@ -22,7 +21,8 @@ class DatabaseOperations {
         'Climber': false,
         'Leveller': false,
         'Notes': "",
-      }
+      },
+      'Names': names,
     }, merge: true);
     db
         .collection('teams')
@@ -31,19 +31,18 @@ class DatabaseOperations {
   }
 
   void updatePitScouting(String teamNumber,
-      {bool drivebaseTall,
-      drivebaseShort,
-      inner,
+      {bool inner,
       outer,
       bottom,
       rotation,
       position,
       climb,
       leveller,
-      String notes}) {
+      String notes,
+      drivebaseType}) {
     db.collection('teams').document('Team Number: ' + teamNumber).updateData({
       'Pit Scouting': {
-        'Drivebase Type': drivebaseTall ? "Tall" : "Short",
+        'Drivebase Type': drivebaseType,
         'Inner Port': inner,
         'Outer Port': outer,
         'Bottom Port': bottom,
@@ -56,13 +55,15 @@ class DatabaseOperations {
     });
   }
 
-  void startNewMatch(String teamNumber, String matchNumber) {
+  void startNewMatch(String teamNumber, String matchNumber, String names) {
     var parent = db
         .collection('teams')
         .document('Team Number: ' + teamNumber)
         .collection('Match Scouting')
         .document('Match Number: ' + matchNumber);
-
+    db.collection('teams').document('Team Number: ' + teamNumber).updateData({
+      'Names': names,
+    });
     parent.setData({
       'Auton': {},
       'Teleop': {},
@@ -231,7 +232,7 @@ class DatabaseOperations {
   }
 
   void updateMatchDataEnd(String teamNumber, String matchNumber,
-      {String matchResult, int fouls, String finalComments, String names}) {
+      {String matchResult, int fouls, String finalComments}) {
     db
         .collection('teams')
         .document('Team Number: ' + teamNumber)
@@ -242,7 +243,6 @@ class DatabaseOperations {
         'Match Result': matchResult,
         'Fouls': fouls,
         'Final Comments': finalComments,
-        'Scouters': names,
       }
     });
 
@@ -324,15 +324,18 @@ class DatabaseOperations {
 
   Future<bool> doesPitDataExist(String teamNumber) async {
     Map<String, dynamic> empty = {
-      'Drivebase Type': "",
-      'Inner Port': false,
-      'Outer Port': false,
-      'Bottom Port': false,
-      'Rotation Control': false,
-      'Position Control': false,
-      'Climber': false,
-      'Leveller': false,
-      'Notes': "",
+      "Pit Scouting": {
+        'Drivebase Type': "",
+        'Inner Port': false,
+        'Outer Port': false,
+        'Bottom Port': false,
+        'Rotation Control': false,
+        'Position Control': false,
+        'Climber': false,
+        'Leveller': false,
+        'Notes': "",
+      },
+      'Names': "",
     };
     return await db
         .collection('teams')
@@ -341,7 +344,7 @@ class DatabaseOperations {
         .then((onValue) {
       if (onValue == null) {
         return false;
-      } else if (onValue.data == empty) {
+      } else if (onValue.data == empty || onValue.data == null) {
         return false;
       } else {
         return true;
@@ -399,7 +402,6 @@ class DatabaseOperations {
         'Ranking Points': 0,
         'Fouls': 0,
         'Final Comments': '',
-        'Scouters': '',
         'Stages Completed': 0,
       }
     };
@@ -412,7 +414,7 @@ class DatabaseOperations {
         .then((onValue) {
       if (onValue == null) {
         return false;
-      } else if (onValue.data == empty) {
+      } else if (onValue.data == empty || onValue.data == null) {
         return false;
       } else {
         return true;

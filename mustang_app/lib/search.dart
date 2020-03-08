@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mustang_app/bottomnavbar.dart';
 import 'package:mustang_app/databaseoperations.dart';
 import 'package:mustang_app/header.dart';
 import 'package:mustang_app/teaminfodisplay.dart';
@@ -140,6 +141,7 @@ class _SearchPageState extends State<SearchPage> {
           //     }).toList())
         ],
       ),
+      bottomNavigationBar: BottomNavBar(context),
     );
   }
 }

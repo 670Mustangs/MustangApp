@@ -18,6 +18,7 @@ class Scouter extends StatefulWidget {
 class _ScouterState extends State<Scouter> {
   TextEditingController _teamNumberController = TextEditingController();
   TextEditingController _matchNumberController = TextEditingController();
+  TextEditingController _namesController = new TextEditingController();
   bool _showError = false;
   DatabaseOperations db = new DatabaseOperations();
 
@@ -34,7 +35,7 @@ class _ScouterState extends State<Scouter> {
       onPressed: () {
         Navigator.pop(context);
         if (pit) {
-          db.startPitScouting(_teamNumberController.text);
+          db.startPitScouting(_teamNumberController.text, _namesController.text);
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -45,7 +46,7 @@ class _ScouterState extends State<Scouter> {
           );
         } else {
           db.startNewMatch(
-              _teamNumberController.text, _matchNumberController.text);
+              _teamNumberController.text, _matchNumberController.text, _namesController.text);
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -106,7 +107,16 @@ class _ScouterState extends State<Scouter> {
               controller: _matchNumberController,
               decoration: InputDecoration(
                 labelText: 'Match Number',
-                errorText: _showError ? 'Match number is required' : null,
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ),
+                    Container(
+            padding: EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
+            child: TextField(
+              controller: _namesController,
+              decoration: InputDecoration(
+                labelText: 'Names',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -117,25 +127,25 @@ class _ScouterState extends State<Scouter> {
               builder: (BuildContext buildContext) => RaisedButton(
                 color: Colors.green,
                 onPressed: () {
-                  if (_teamNumberController.text.isEmpty) {
-                    Scaffold.of(buildContext).showSnackBar(SnackBar(
-                      content: Text("Enter a team number"),
-                    ));
-                    return;
-                  } else if (_matchNumberController.text.isEmpty) {
-                    Scaffold.of(buildContext).showSnackBar(SnackBar(
-                      content: Text("Enter a match number"),
-                    ));
-                    return;
-                  }
                   setState(() {
+                    if (_teamNumberController.text.isEmpty) {
+                      Scaffold.of(buildContext).showSnackBar(SnackBar(
+                        content: Text("Enter a team number"),
+                      ));
+                      return;
+                    } else if (_namesController.text.isEmpty) {
+                      Scaffold.of(buildContext).showSnackBar(SnackBar(
+                        content: Text("Enter a name"),
+                      ));
+                      return;
+                    }
                     db
                         .doesPitDataExist(_teamNumberController.text)
                         .then((onValue) {
                       if (onValue) {
                         showAlertDialog(context, true);
                       } else {
-                        db.startPitScouting(_teamNumberController.text);
+                        db.startPitScouting(_teamNumberController.text, _namesController.text);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -174,6 +184,12 @@ class _ScouterState extends State<Scouter> {
                       ));
                       return;
                     }
+                     else if (_namesController.text.isEmpty) {
+                      Scaffold.of(buildContext).showSnackBar(SnackBar(
+                        content: Text("Enter a name"),
+                      ));
+                      return;
+                    }
                     db
                         .doesMatchDataExist(_teamNumberController.text,
                             _matchNumberController.text)
@@ -182,7 +198,7 @@ class _ScouterState extends State<Scouter> {
                         showAlertDialog(context, false);
                       } else {
                         db.startNewMatch(_teamNumberController.text,
-                            _matchNumberController.text);
+                            _matchNumberController.text, _namesController.text);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
