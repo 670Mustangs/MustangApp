@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:mustang_app/endgamescouting.dart';
-import 'package:mustang_app/teaminfodisplay.dart';
+import 'package:mustang_app/screens/endgamescouting.dart';
+import 'package:mustang_app/screens/teaminfodisplay.dart';
 
-import './calendar.dart';
-import './scouter.dart';
-import './autonscouting.dart';
-import './teleopscouting.dart';
-import './postscouter.dart';
-import './search.dart';
-import './homepage.dart';
-import './matchendscouting.dart';
-import './sketcher.dart';
+
+import 'screens/calendar.dart';
+import 'screens/scouter.dart';
+import 'screens/autonscouting.dart';
+import 'screens/teleopscouting.dart';
+import 'screens/postscouter.dart';
+import 'screens/search.dart';
+import 'screens/homepage.dart';
+import 'screens/loginpage.dart';
+import 'screens/root_page.dart';
+import 'screens/matchendscouting.dart';
+import 'screens/sketcher.dart';
+import 'screens/profile.dart';
+import 'screens/root_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,6 +24,9 @@ class MyApp extends StatelessWidget {
   static final Map<String, WidgetBuilder> routes = {
     Calendar.route: (BuildContext context) => new Calendar(),
     Scouter.route: (BuildContext context) => new Scouter(),
+    Profile.route: (BuildContext context) =>  new Profile(),
+    RootPage.route: (BuildContext context) => new RootPage(),
+    HomePage.route: (BuildContext context) => new HomePage(),
     // AutonScouter.route: (BuildContext context) => new AutonScouter(),
     // TeleopScouter.route: (BuildContext context) => new TeleopScouter(),
     // EndgameScouter.route: (BuildContext context) => new EndgameScouter(),
@@ -27,6 +35,7 @@ class MyApp extends StatelessWidget {
     SearchPage.route: (BuildContext context) => new SearchPage(),
     SketchPage.route: (BuildContext context) => new SketchPage(),
   };
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,8 +43,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: HomePage(),
+      home: RootPage(),
       routes: routes,
     );
   }
 }
+

@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import 'package:googleapis/calendar/v3.dart' hide Colors;
+import 'package:googleapis_auth/auth_io.dart';
+
 import './header.dart';
 import './bottomnavbar.dart';
 
 class Calendar extends StatefulWidget {
   static const String route = '/Calendar';
   static Map<DateTime, List> events;
+
+  //get Service Account Credentials
+final accountCredentials = new ServiceAccountCredentials.fromJson({
+  "private_key_id": "147555dcfa1a0d59b16ef7e412187333b287e47c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDMOHB/yabDy9ZA\ncICZ6m3ORoNEmmM3bMJ0eIdlwN2C9Caih6GRGy+F84lU7oNE4Cf2XlOZ7WirGNNX\nAe3COheXwSrzfvczEa+8REeF35l2DkNXrw2lN468AeN7MwXxNu+msEC7Hvecjojg\nwaoJ+hIYFRmoMgfQt+9e5olv4kA4QJbeuq8P9Ns/qynyYqZXMbrvDgbhBX9w68eq\ne0zm46wrCJHRptSg15cwA8EsZSxQ6jvfU61wXREXPJQA1jkWacEt353eJgCK7329\nn0FUFa2xW0l6fh7fqb+8PMZuHeuQz7FkWviqQ4db9gpabV83IVFjqgwahHKRc7Mg\nQivitkpLAgMBAAECggEAJCADvockSdRf9Qwxo4h1nhyZEeShkmdZypKbmONSC902\njF+js/B0KqTW8UAz1lY0m386GKuHbWS51dVQgqAWFlEkUOhvwAfr50jIwiS4l8qU\nHQmpR0WZqSZIYD25Wl8Wa40YFkG3GWmZSvDXLGahFsN8w2T+PuyamlX7j+Ac7hYl\ni9Zs3Dg/dgxbw28LXW6dLc6eVxY+L61fns9b6DC7Hgmx7t2HPJlCE3b1h+LdVEQk\nTmKLxW8fQYqHaXOFUzb96+qAFww2L6zqVARFqEjh+FxFV0SmXeG/bWsqcMehPO27\nR1QvnFitdOzuGZSKeLH+NtGYtH5yXZxmsBjnlqjCaQKBgQD86BpXCfd+FXPoyIqM\n1GdMuuqxRhb294+ma7MXvbTROkCTp4NHl+e1/fqszLSun7tytClibi3O3UUvITUf\n+C74mUtMhjBzRbRc/1qkqg2f9lNB2529g6JW41TPKyxgJ7GhxPWkT7ySmfvFtDhi\nTBbNtutV3Thv373GvbqrZclMXQKBgQDOt+QkpU+gpFAURlWkVO0hXr0+pWhxgp9A\n4pbFi3qzfA7xoa6lH7cMCo0ysjlrI94mlk/Or4hvD5hf/mnaaQPtl6O1fyuxRF4V\nhuT7E2VvG64jrOB6CSbNwnq//aArwod/1/A01Jd6XUYZIsf3b77ReY/5Y8LLVSWW\nQMCdGBzGxwKBgQCrptkh1DjvkZ3vFBW9ifhmwsLB+UFi9BnCqXyPk4mjLHdiACMB\nN5/kDPLTz8iecPmn25HvJbrfmZz4ZQCKp0cyIdFSqg0+X8QQDpy2AFlpBaXyoB2K\n4EoR0Q/h4Hqo9KgClQzoLdpeYjbZM/3E8cHUc998kr5YaDKFLocBB/+9XQKBgEAA\nmYdrE2tWVGDiofN+Q+kYDxnNVrgGTE5nmWzSUYwuteXEPHFtj1wQDEWM/tAYS9jA\nozcIDALu3iuidp2j9A5k68/u7tU0qLibilveVoJ/HHx5Mws1uCjutNiqqyPBV/iS\nIBILXFcLd/+iUC1hEMCElboOVCpmU3vg0oIRDB/TAoGABtBkV6SbwrV5EvQ/MyhP\nurxT3zXIjut1OyEZxD5logzwZnhiaZDwZO89YpftQ1O5M8Q7Uurg/bt8lzF7YNdm\nfTV5Kn40zhWsUx/s07Ffnp21GE4VGOVzKDv1L5sG4VeH8hnizmYAv6JLkft/zTeg\nrOJJxlDPiz8wnBi5guHts8c=\n-----END PRIVATE KEY-----\n",
+  "client_email": "test-421@test-1593060333593.iam.gserviceaccount.com",
+  "client_id": "109608772537106852856",
+  "type": "service_account"
+});
+var _scopes = [CalendarApi.CalendarScope]; //defines the scopes for the calendar api
+
 
   void initEvents() {
     events = new Map<DateTime, List>();
@@ -30,6 +44,21 @@ class Calendar extends StatefulWidget {
       events.putIfAbsent(DateTime(2019, 10, 11 + 7 * i),
           () => ['Projects', 'R & D', 'Mad Max']);
     }
+
+    clientViaServiceAccount(accountCredentials, _scopes).then((client) {
+      var calendar = new CalendarApi(client);
+      var calEvents = calendar.events.list("team670@homesteadrobotics.com");
+      calEvents.then((Events e) {
+        e.items.forEach((Event event) {
+          try{
+            // print(event.start.dateTime.year);
+            events.putIfAbsent(DateTime(event.start.dateTime.year, event.start.dateTime.month, event.start.dateTime.day), () => [event.summary]);
+          } catch (e){
+            
+          }
+          });
+      });
+    });
   }
 
   @override
@@ -85,7 +114,9 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Header(context, 'Calendar'),
+      appBar: AppBar(automaticallyImplyLeading: false,
+        title: Text('Calendar'),
+      ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
@@ -110,7 +141,7 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
       events: _events,
       startingDayOfWeek: StartingDayOfWeek.monday,
       calendarStyle: CalendarStyle(
-        selectedColor: Colors.green,
+        selectedColor: Colors.green, 
         todayColor: Colors.blue,
         markersColor: Colors.brown[700],
         outsideDaysVisible: false,

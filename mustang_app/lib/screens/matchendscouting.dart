@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mustang_app/counter.dart';
+import 'package:mustang_app/screens/counter.dart';
 
-import './databaseoperations.dart';
+import 'package:mustang_app/db/databaseoperations.dart';
 import './header.dart';
 import './postscouter.dart';
 

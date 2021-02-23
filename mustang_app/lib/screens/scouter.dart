@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mustang_app/pitscouting.dart';
+import 'package:mustang_app/screens/pitscouting.dart';
 
 import './header.dart';
 import './autonscouting.dart';
 import './bottomnavbar.dart';
-import './databaseoperations.dart';
+import 'package:mustang_app/db/databaseoperations.dart';
 
 class Scouter extends StatefulWidget {
   static const String route = '/Scouter';
@@ -84,9 +84,8 @@ class _ScouterState extends State<Scouter> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Header(
-        context,
-        'Pre Scouting Info',
+      appBar: AppBar(automaticallyImplyLeading: false,
+        title: Text('Pre Scouting Info'),
       ),
       body: ListView(
         children: <Widget>[

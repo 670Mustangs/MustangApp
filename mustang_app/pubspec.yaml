@@ -24,6 +24,13 @@ dependencies:
   flutter_speed_dial:
   flutter_colorpicker:
   cloud_firestore:
+  googleapis_auth: 
+  googleapis: 
+  firebase_messaging:
+  firebase_auth: 0.16.1
+  google_sign_in: 4.4.4
+  rxdart: 0.20.0
+  shared_preferences:
     
   flutter:
     sdk: flutter
@@ -51,6 +58,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - assets/
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg

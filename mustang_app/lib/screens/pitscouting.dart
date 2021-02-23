@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mustang_app/postscouter.dart';
+import 'package:mustang_app/screens/postscouter.dart';
 
 import './header.dart';
-import './databaseoperations.dart';
+import 'package:mustang_app/db/databaseoperations.dart';
 import './counter.dart';
 
 class PitScouter extends StatefulWidget {

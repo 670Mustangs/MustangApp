@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:mustang_app/sketcher.dart';
+import 'package:mustang_app/screens/sketcher.dart';
 
 import './calendar.dart';
 import './scouter.dart';
 import './search.dart';
+import './profile.dart';
+import './homepage.dart';
+
 
 class BottomNavBar extends BottomNavigationBar {
   static int _selectedIndex = 0;
 
   static final routes = [
-    '/',
+    HomePage.route,
     Calendar.route,
     Scouter.route,
     SearchPage.route,
-    SketchPage.route,
+    // SketchPage.route,
   ];
 
   BottomNavBar(BuildContext context)
@@ -36,17 +39,16 @@ class BottomNavBar extends BottomNavigationBar {
               icon: Icon(Icons.search),
               title: Text('Data'),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.edit),
-              title: Text('Draw'),
-            ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.edit),
+            //   title: Text('Draw'),
+            // ),
           ],
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.green,
           onTap: (int index) {
             _selectedIndex = index;
-            Navigator.of(context).pushNamed('/');
-            Navigator.of(context).pushNamed(routes[index]);
+            Navigator.pushNamed(context, routes[index]);
           },
         );
 }

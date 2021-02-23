@@ -1,9 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+<<<<<<< Updated upstream:mustang_app/lib/search.dart
 import 'package:mustang_app/bottomnavbar.dart';
 import 'package:mustang_app/databaseoperations.dart';
 import 'package:mustang_app/header.dart';
 import 'package:mustang_app/teaminfodisplay.dart';
+=======
+import 'package:mustang_app/db/databaseoperations.dart';
+import 'package:mustang_app/screens/header.dart';
+import 'package:mustang_app/screens/teaminfodisplay.dart';
+>>>>>>> Stashed changes:mustang_app/lib/screens/search.dart
 
 class SearchPage extends StatefulWidget {
   static const String route = './Search';
@@ -63,9 +69,8 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new Header(
-        context,
-        'Search Data',
+      appBar: AppBar(
+        title: Text('Search Scouting Data'),
       ),
       body: ListView(
         children: <Widget>[
